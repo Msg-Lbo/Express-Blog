@@ -33,7 +33,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
-, "src/utils/debounce.ts"  ],
+, "src/utils/debounce.ts", "src/store/index.ts"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

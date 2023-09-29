@@ -45,12 +45,22 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import('@/views/admin_page/home_admin/index.vue'),
-      redirect: '/article-manager',
+      redirect: '/dashboard',
       children: [
+        {
+          path:'/dashboard',
+          name:'dashboard',
+          component: () => import('@/views/admin_page/dashboard/index.vue')
+        },
         {
           path: '/article-manager',
           name: 'article-manager',
           component: () => import('@/views/admin_page/article_admin/index.vue')
+        },
+        {
+          path: '/category-manager',
+          name: 'category-manager',
+          component: () => import('@/views/admin_page/category_admin/index.vue')
         }
       ]
     }
