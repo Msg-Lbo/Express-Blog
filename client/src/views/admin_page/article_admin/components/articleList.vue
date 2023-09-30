@@ -5,6 +5,8 @@
                 <tr>
                     <th class="title">文章标题</th>
                     <th class="des">文章描述</th>
+                    <th class="category">归属分类</th>
+                    <th class="comment-num center">评论数</th>
                     <th class="create-time center">发布时间</th>
                     <th class="update-time center">修改时间</th>
                     <th class="actions center">操作</th>
@@ -14,6 +16,8 @@
                 <tr v-for="(__, index) in 13" :key="index">
                     <td class="title">放弃</td>
                     <td class="des">反常的</td>
+                    <td class="category">归属分类</td>
+                    <td class="comment-num center">10086</td>
                     <td class="create-time center">
                         2021-01-01 00:00:00
                     </td>
@@ -59,6 +63,7 @@ const page = ref(1);
         width: 150px;
     }
 
+    .comment-num,
     .actions {
         width: 100px;
     }
@@ -74,6 +79,7 @@ const page = ref(1);
     #article-admin {
 
         .des,
+        .comment-num,
         .update-time,
         .create-time,
         .actions {

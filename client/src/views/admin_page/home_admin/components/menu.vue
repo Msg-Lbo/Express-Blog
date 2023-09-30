@@ -41,7 +41,7 @@ const menuOptions: MenuOption[] = [
     },
     {
         label: '评论管理',
-        key: 'comment-manager',
+        key: 'comments-manager',
         icon: renderIcon(CommentIcon),
     },
     {

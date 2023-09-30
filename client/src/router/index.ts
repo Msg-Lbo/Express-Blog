@@ -61,6 +61,16 @@ const router = createRouter({
           path: '/category-manager',
           name: 'category-manager',
           component: () => import('@/views/admin_page/category_admin/index.vue')
+        },
+        {
+          path: '/comments-manager',
+          name: 'comments-manager',
+          component: () => import('@/views/admin_page/comments_admin/index.vue')
+        },
+        {
+          path: '/friends-manager',
+          name: 'friends-manager',
+          component: () => import('@/views/admin_page/friends_admin/index.vue')
         }
       ]
     }
