@@ -18,14 +18,14 @@
         <tr v-for="item in comments" :key="item.id">
           <td class="nickname center">{{ item.author }}</td>
           <td class="content">
-            <n-ellipsis style="max-width: 300px">
+            <n-ellipsis style="max-width: 300px;" :tooltip="false">
               {{ item.content }}
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit molestias culpa expedita omnis nemo.
               Distinctio culpa ut iste velit cupiditate. Aperiam suscipit ad rem ex excepturi fugit saepe unde quos
             </n-ellipsis>
           </td>
           <td class="for-article">
-            <n-ellipsis style="max-width: 200px">
+            <n-ellipsis style="max-width: 200px;" :tooltip="false">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit molestias culpa expedita omnis nemo.
               Distinctio culpa ut iste velit cupiditate. Aperiam suscipit ad rem ex excepturi fugit saepe unde quos
             </n-ellipsis>
@@ -62,12 +62,15 @@ const comments = ref([
 #comments {
   padding: 24px;
   min-width: 800px;
+
   .center {
     text-align: center;
   }
-  .content{
+
+  .content {
     width: 300px;
   }
+
   .nickname {
     width: 100px;
   }
@@ -91,14 +94,16 @@ const comments = ref([
 //  宽度低于 1380px并且大于 800px 时
 @media screen and (max-width: 1380px) {
   #comments {
-    .create_time{
+    .create_time {
       display: none;
     }
   }
 }
+
 // 宽度低于1168px时
 @media screen and (max-width: 1168px) {
   #comments {
+
     .email,
     .ip,
     .address {

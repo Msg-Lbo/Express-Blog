@@ -55,8 +55,13 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon(SettingsIcon),
     },
     {
+        label: '图片管理',
+        key: 'images-manager',
+        icon: renderIcon(SettingsIcon),
+    },
+    {
         label: '过去增多，未来减少',
-        key: '#',
+        key: 'list',
         icon: renderIcon(AllInclusiveIcon),
     }
 ]

@@ -19,5 +19,9 @@ import editArticle from './components/editArticle.vue';
 </script>
 
 <style lang='scss' scoped>
-
+#article-admin {
+    ::v-deep(.n-card) {
+        background-color: transparent;
+    }
+}
 </style>

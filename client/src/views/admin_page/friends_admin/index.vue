@@ -3,10 +3,10 @@
         <n-card :bordered="false">
             <n-tabs type="line" animated>
                 <n-tab-pane name="ArticlesList" tab="待审核">
-                    <article-list></article-list>
+                    <wait></wait>
                 </n-tab-pane>
                 <n-tab-pane name="editArticle" tab="已通过">
-                    <edit-article></edit-article>
+                    <passed></passed>
                 </n-tab-pane>
             </n-tabs>
         </n-card>
@@ -14,6 +14,14 @@
 </template>
 
 <script setup lang='ts'>
+import wait from './components/wait.vue';
+import passed from './components/passed.vue';
 </script>
 
-<style lang='scss' scoped></style>
+<style lang='scss' scoped>
+#friends {
+    ::v-deep(.n-card) {
+        background-color: transparent;
+    }
+}
+</style>

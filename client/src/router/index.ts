@@ -71,6 +71,16 @@ const router = createRouter({
           path: '/friends-manager',
           name: 'friends-manager',
           component: () => import('@/views/admin_page/friends_admin/index.vue')
+        },
+        {
+          path:'/other-settings',
+          name:'other-settings',
+          component: () => import('@/views/admin_page/settings_admin/index.vue')
+        },
+        {
+          path:'/images-manager',
+          name:'images-manager',
+          component: () => import('@/views/admin_page/image_admin/index.vue')
         }
       ]
     }
