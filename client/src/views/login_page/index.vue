@@ -5,38 +5,23 @@
                 <n-h1>
                     后台登陆
                 </n-h1>
-                <n-form>
-                    <n-form-item-row label="用户名">
-                        <n-input v-model:value="username" />
-                    </n-form-item-row>
-                    <n-form-item-row label="密码">
-                        <n-input v-model:value="password" />
-                    </n-form-item-row>
-                </n-form>
-                <n-button :loading="loading" type="primary" block secondary strong @click="login">
-                    登录
-                </n-button>
+                <n-tabs class="card-tabs" default-value="signin" size="large" animated pane-wrapper-style="margin: 0 -4px"
+                    pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;">
+                    <n-tab-pane name="signin" tab="登录">
+                        <login-view></login-view>
+                    </n-tab-pane>
+                    <n-tab-pane name="signup" tab="注册">
+                        <register-view></register-view>
+                    </n-tab-pane>
+                </n-tabs>
             </n-card>
         </div>
     </div>
 </template>
   
 <script setup lang="ts">
-import { ref } from 'vue';
-import { debounce } from '@/utils/debounce'
-const username = ref('');
-const password = ref('');
-const loading = ref(false);
-// 登陆
-const login = () => {
-    loading.value = true;
-    console.log(username.value, password.value);
-    // 防抖
-    const d_login = debounce(() => {
-        loading.value = false;
-    }, 1500);
-    d_login();
-}
+import loginView from './components/login.vue';
+import registerView from './components/register.vue';
 </script>
   
 <style lang="scss" scoped>
@@ -48,7 +33,7 @@ const login = () => {
 }
 
 .form-container {
-    width: 400px;
+    width: 600px;
     padding: 40px;
     border-radius: 10px;
 
