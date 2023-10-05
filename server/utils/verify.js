@@ -1,36 +1,44 @@
-const jwt = require("jsonwebtoken");
 
-const authToken = (req, res, next) => {
-    // 获取cookie中的cookie
+const jwt = require("jsonwebtoken");
+// 对请求中的cookie中的token进行验证
+const authToken = async (req, res, next) => {
+    // 获取cookie中的token
     const token = req.cookies.token;
-    console.log(token);
     // 如果没有token
     if (!token) {
         return res.json({
-            code: 401,
-            msg: '未登录'
+            code: 400,
+            msg: "请先登录",
         });
     }
     // 如果有token
     try {
-        // 解析token
-        jwt.verify(token, 'CNMB@!#3+2-5dy0');
-        // 验证token是否过期
-        const { exp } = jwt.decode(token);
-        if (Date.now() / 1000 > exp) {
+        const decodedToken = jwt.verify(token, "CNMB@!#3+2-5dy0");
+        req.userId = decodedToken.userId;
+        // 验证token
+        const decoded = jwt.verify(token, "CNMB@!#3+2-5dy0");
+        // 如果token过期
+        if (decoded.exp <= Date.now() / 1000) {
             return res.json({
-                code: 401,
-                msg: '登录过期'
+                code: 400,
+                msg: "登录已过期",
             });
         }
+        // 如果token未过期
         next();
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.json({
+                code: 401,
+                message: '登录已过期'
+            });
+        }
+        console.log("服务端错误：", error);
         return res.json({
-            code: 401,
-            msg: '登录过期'
+            code: 400,
+            msg: "服务端错误",
         });
     }
-}
+};
 
 module.exports = authToken;

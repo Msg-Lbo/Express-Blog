@@ -2,9 +2,7 @@
     <div id="home-admin">
         <n-layout style="height: 100vh">
             <n-layout-header style="height: 64px;" bordered>
-                <div class="logo">
-                    <img src="@/assets/images/logo.gif" alt="" srcset="">
-                </div>
+                <header-view></header-view>
             </n-layout-header>
             <n-layout position="absolute" style="top: 64px; bottom: 64px" has-sider>
                 <n-layout-sider :native-scrollbar="false" :collapsed-width="64" show-trigger collapse-mode="width"
@@ -24,20 +22,12 @@
 
 <script setup lang='ts'>
 import adminMenu from './components/menu.vue'
+import headerView from './components/header.vue'
 </script>
 
 <style lang='scss' scoped>
 #home-admin {
     min-width: 500px;
-
-    .logo {
-        width: 100px;
-        height: 64px;
-        padding: 0 24px;
-        img{
-            width: 100%;
-            height: 100%;
-        }
-    }
+   
 }
 </style>

@@ -3,7 +3,28 @@ const sendMail = require('../utils/sendEmail');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-
+// 获取所有用户
+exports.getAllUser = async (req, res) => {
+    try {
+        const sql = `select * from user`;
+        const [result] = await query(sql);
+        return res.json({
+            code: 200,
+            msg: '获取成功',
+            data: {
+                id: result[0].id,
+                account: result[0].account,
+                email: result[0].email
+            }
+        })
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            code: 500,
+            msg: '服务端错误'
+        })
+    }
+}
 // 获取验证码并设定验证码过期时间
 exports.getCaptcha = async (req, res) => {
     const { email } = req.query;
@@ -48,11 +69,10 @@ exports.getCaptcha = async (req, res) => {
         });
     }
 }
-
 // 创建用户
 exports.register = async (req, res) => {
-    const { username, password, email, code } = req.body;
-    if (!username || !password || !email || !code) {
+    const { account, password, email, code } = req.body;
+    if (!account || !password || !email || !code) {
         return res.json({
             code: 400,
             msg: '参数不完整'
@@ -92,7 +112,7 @@ exports.register = async (req, res) => {
     }
     try {
         // 如果用户名或邮箱已经存在
-        const sql1 = `select * from user where username = '${username}' or email = '${email}'`;
+        const sql1 = `select * from user where account = '${account}' or email = '${email}'`;
         const [result1] = await query(sql1);
         if (result1.length >= 1) {
             return res.json({
@@ -102,7 +122,7 @@ exports.register = async (req, res) => {
         }
         // 对密码进行哈希
         const hashPassword = await bcrypt.hash(password, 10);
-        const sql = `insert into user (username, password, email) values ('${username}', '${hashPassword}', '${email}')`;
+        const sql = `insert into user (account, password, email) values ('${account}', '${hashPassword}', '${email}')`;
         const [result] = await query(sql);
         console.log(result.affectedRows);
         if (result.affectedRows === 1) {
@@ -125,18 +145,17 @@ exports.register = async (req, res) => {
         })
     }
 }
-
-// 登陆
+// 登录
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
+    const { account, password } = req.body;
+    if (!account || !password) {
         return res.json({
             code: 400,
             msg: '参数不完整'
         });
     }
     try {
-        const sql = `select * from user where username = '${username}'`;
+        const sql = `select * from user where account = '${account}'`;
         const [result] = await query(sql);
         if (result.length === 0) {
             return res.json({
@@ -153,8 +172,10 @@ exports.login = async (req, res) => {
         }
         const user = {
             id: result[0].id,
-            username: result[0].username,
-            email: result[0].email
+            account: result[0].account,
+            email: result[0].email,
+            identity: result[0].identity,
+            nickname: result[0].nickname
         }
         // 生成token
         const token = jwt.sign(user, "CNMB@!#3+2-5dy0", { expiresIn: '1h' });
@@ -177,14 +198,53 @@ exports.login = async (req, res) => {
         })
     }
 }
-// 退出登陆
+// 用户退出登录
 exports.logout = async (req, res) => {
-    // 清除cookie
-    req.cookies.token = null;
-    console.log(req.cookies);
+    res.clearCookie('token', {
+        sameSite: "none",
+        secure: true,
+    })
+    // res.cookie('token', '123123',{ httpOnly: true, maxAge: 0 })
     return res.json({
         code: 200,
-        msg: '退出登陆成功',
+        msg: '退出登录成功',
         succeed: true
     })
+}
+// 是否管理员
+exports.isAdmin = async (req, res) => {
+    const { account } = req.body
+    // 信息是否为空
+    if (!account) {
+        return res.json({
+            code: 400,
+            msg: '请先登陆'
+        })
+    }
+    try {
+        const sql = `select * from user where account = '${account}'`
+        const [rows] = await query(sql)
+        if (rows.length !== 1) {
+            return res.json({
+                code: 400,
+                msg: '获取信息失败'
+            })
+        }
+        if (rows[0].identity === '管理员') {
+            return res.json({
+                code: 200,
+                msg: '管理员',
+                succeed: true,
+                data: {
+                    identity: rows[0].identity
+                }
+            })
+        }
+    } catch (error) {
+        console.log('服务端错误：', error);
+        return res.json({
+            code: 500,
+            msg: '服务器错误'
+        })
+    }
 }

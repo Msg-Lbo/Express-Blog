@@ -2,7 +2,7 @@
     <n-form ref="formRef" :model="registerForm" :rules="rules" label-placement="top">
         <n-grid :cols="24" :x-gap="24">
             <n-form-item-gi :span="12" label="账号" path="username">
-                <n-input placeholder="Input" v-model:value="registerForm.username" />
+                <n-input placeholder="Input" v-model:value="registerForm.account" />
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="邮箱" path="email">
                 <n-auto-complete v-model:value="registerForm.email" :options="autoCompleteOptions" placeholder="Email" />
@@ -30,7 +30,7 @@
 
 <script setup lang='ts'>
 import { ref, computed } from 'vue';
-import { getEmailCode, register } from '@/apis/user';
+import { getEmailCodeApi, registerApi } from '@/apis/user';
 import { FormItemRule, FormRules, useMessage } from 'naive-ui';
 import { debounce } from '@/utils/debounce';
 const isGet = ref(false);
@@ -39,7 +39,7 @@ const message = useMessage()
 const loading = ref(false);
 
 interface ModelType {
-    username: string
+    account: string
     email: string
     password: string
     reenteredPassword: string
@@ -47,7 +47,7 @@ interface ModelType {
 }
 // 表单数据
 const registerForm = ref<ModelType>({
-    username: '',
+    account: '',
     email: '',
     password: '',
     reenteredPassword: '',
@@ -120,7 +120,7 @@ const getCode = async () => {
             time.value = 60;
         }
     }, 1000);
-    const res = await getEmailCode(registerForm.value.email);
+    const res = await getEmailCodeApi(registerForm.value.email);
     if (res.code === 200) {
         message.success(res.msg)
     }
@@ -133,7 +133,7 @@ const handleRegister = async () => {
         loading.value = false;
     }, 1500);
     d_register();
-    const res = await register(registerForm.value);
+    const res = await registerApi(registerForm.value);
     if (res.code === 200) {
         message.success(res.msg)
     }

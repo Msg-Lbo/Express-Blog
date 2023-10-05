@@ -1,7 +1,7 @@
 <template>
     <n-form>
         <n-form-item-row label="用户名">
-            <n-input v-model:value="loginForm.username" />
+            <n-input v-model:value="loginForm.account" />
         </n-form-item-row>
         <n-form-item-row label="密码">
             <n-input v-model:value="loginForm.password" type="password" />
@@ -15,13 +15,13 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { debounce } from '@/utils/debounce'
-import { login } from '@/apis/user'
+import { loginApi } from '@/apis/user'
 import { useMessage } from 'naive-ui';
 import { useUserStore } from '@/store/userSotre';
 import router from '@/router';
 const userStore = useUserStore();
 const loginForm = ref({
-    username: 'msglbo',
+    account: 'msglbo',
     password: '141444'
 })
 const message = useMessage()
@@ -34,7 +34,7 @@ const handleLogin = async() => {
         loading.value = false;
     }, 1500);
     d_login();
-    const res = await login(loginForm.value);
+    const res = await loginApi(loginForm.value);
     if (res.code === 200) {
         message.success(res.msg);
         console.log(res);

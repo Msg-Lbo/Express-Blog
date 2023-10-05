@@ -15,21 +15,20 @@ const corsOptions = {
     exposeHeaders: 'Content-length',
     credentials: true,
 }
-
-app.use(cors(corsOptions))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cors(corsOptions));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 const upload = multer({
-    dest: './public/uploads/'
-})
-app.use(upload.any())
-app.use(express.static('./public'))
-app.use(cookieParser())
+    dest: './public/uploads/',
+});
+app.use(upload.any());
+app.use(express.static('./public'));
+app.use(cookieParser());
 app.use(session({
     secret: 'CNMB@!#3+2-5dy0', // 建议使用 128 个字符的随机字符串
     resave: true,
     saveUninitialized: false,
-    cookie: { maxAge: 60 * 1000, httpOnly: true }
+    cookie: { path: '/', maxAge: 60 * 60 * 1000, httpOnly: true }
 }))
 
 app.use('/api/v1', require('./router'))

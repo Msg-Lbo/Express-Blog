@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { createDiscreteApi } from "naive-ui";
 
-
 const { message, loadingBar } = createDiscreteApi(['message', 'loadingBar'])
 axios.defaults.withCredentials = true;
 

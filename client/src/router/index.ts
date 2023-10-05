@@ -48,77 +48,73 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import('@/views/admin_page/home_admin/index.vue'),
-      redirect: '/dashboard',
+      redirect: '/admin/dashboard',
+      meta: {
+        requireAuth: true
+      },
       children: [
         {
-          path: '/dashboard',
+          path: '/admin/dashboard',
           name: 'dashboard',
           component: () => import('@/views/admin_page/dashboard/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/article-manager',
+          path: '/admin/article-manager',
           name: 'article-manager',
           component: () => import('@/views/admin_page/article_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/category-manager',
+          path: '/admin/category-manager',
           name: 'category-manager',
           component: () => import('@/views/admin_page/category_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/comments-manager',
+          path: '/admin/comments-manager',
           name: 'comments-manager',
           component: () => import('@/views/admin_page/comments_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/friends-manager',
+          path: '/admin/friends-manager',
           name: 'friends-manager',
           component: () => import('@/views/admin_page/friends_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/other-settings',
+          path: '/admin/other-settings',
           name: 'other-settings',
           component: () => import('@/views/admin_page/settings_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         },
         {
-          path: '/images-manager',
+          path: '/admin/images-manager',
           name: 'images-manager',
           component: () => import('@/views/admin_page/image_admin/index.vue'),
-          meta: {
-            requireAuth: true
-          },
         }
       ]
     }
   ],
 });
 
+
 router.beforeEach((to, _from, next) => {
-  const userStore = useUserStore()
-  const username = userStore.userInfo.username
-  // 如果用户没有登录，但是访问的是后台页面，则跳转到登录页面
-  if (!username && to.meta.requireAuth) {
-    next('/login')
-    message.warning('请先登录')
+  const userStore = useUserStore();
+
+  // 如果需要登录
+  if (to.meta.requireAuth) {
+    if (userStore.userInfo.account === '') {
+      message.error('您还没有登录，请先登录');
+      next('/login');
+    } else {
+      userStore.isAdmin().then(res => {
+        if (res === true) {
+          // 是管理员，可以继续访问
+          next();
+        } else {
+          message.error('您不是管理员，无法访问该页面');
+        }
+      });
+    }
+  } else {
+    // 不需要登录的情况下直接放行
+    next();
   }
-  next()
 });
 export default router;
