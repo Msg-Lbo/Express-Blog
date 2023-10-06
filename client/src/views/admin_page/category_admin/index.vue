@@ -7,15 +7,15 @@
                 </template>
                 <n-input size="small" v-model:value="category_name" placeholder="请输入分类名称" />
                 <div class="save-button" style="display: flex; margin-top: 8px; justify-content: flex-end;">
-                    <n-button size="small" type="success" @click="onSaveCategory">保存</n-button>
+                    <n-button size="small" type="success" @click="onAddCategory">保存</n-button>
                 </div>
             </n-popover>
         </div>
         <ul class="category-list">
-            <li class="category-item" v-for="(__, index) in 15" :key="index">
+            <li class="category-item" v-for="item in categoryList" :key="item.id">
                 <n-card size="small" hoverable>
                     <div class="category-content">
-                        <div class="category-item-title">分类标题</div>
+                        <div class="category-item-title">{{ item.category_name }}</div>
                         <div class="category-item-body">
                             <div class="category-item-article-num">文章数: 10086</div>
                         </div>
@@ -23,15 +23,16 @@
                             <n-space>
                                 <n-popover placement="bottom" trigger="click">
                                     <template #trigger>
-                                        <n-button type="warning" text @click="getCategory(index)">修改</n-button>
+                                        <n-button type="warning" text
+                                            @click="editCategory(item.category_name)">修改</n-button>
                                     </template>
                                     <n-input size="small" v-model:value="category_name" placeholder="请输入分类名称" />
                                     <div class="save-button"
                                         style="display: flex; margin-top: 8px; justify-content: flex-end;">
-                                        <n-button size="small" type="success" @click="onSaveCategory">保存</n-button>
+                                        <n-button size="small" type="success" @click="getCategory(item.id)">保存</n-button>
                                     </div>
                                 </n-popover>
-                                <n-popconfirm @positive-click="deleteCategory(index)">
+                                <n-popconfirm @positive-click="deleteCategory(item.id)">
                                     <template #trigger>
                                         <n-button type="error" text>删除</n-button>
                                     </template>
@@ -47,21 +48,46 @@
 </template>
 
 <script setup lang='ts'>
+import { getAllCategoryApi, updateCategoryApi, deleteCategoryApi, addCategoryApi } from '@/apis/category';
+import { useMessage } from 'naive-ui';
 import { onMounted, ref } from 'vue'
 const category_name = ref('')
-const onSaveCategory = () => {
-    console.log('保存分类')
-    category_name.value = ''
-    getCategories()
+const message = useMessage()
+// 保存分类
+const onAddCategory = async () => {
+    const res = await addCategoryApi(category_name.value)
+    if (res.code === 200) {
+        message.success(res.msg)
+        category_name.value = ''
+        getCategories()
+    }
 }
-const getCategory = (id: number) => {
-    category_name.value = id.toString()
+// 修改分类
+const editCategory = (name: string) => {
+    category_name.value = name
 }
-const getCategories = () => {
-    console.log('获取分类列表')
+const getCategory = async (id: number) => {
+    const res = await updateCategoryApi(id, category_name.value)
+    if (res.code === 200) {
+        message.success(res.msg)
+        getCategories()
+    }
 }
-const deleteCategory = (id: number) => {
-    console.log('删除分类', id)
+// 获取分类列表
+const categoryList = ref<any>([])
+const getCategories = async () => {
+    const res = await getAllCategoryApi()
+    if (res.code === 200) {
+        categoryList.value = res.data
+    }
+}
+// 删除分类
+const deleteCategory = async (id: number) => {
+    const res = await deleteCategoryApi(id)
+    if (res.code === 200) {
+        message.success(res.msg)
+        getCategories()
+    }
 }
 onMounted(() => {
     getCategories()

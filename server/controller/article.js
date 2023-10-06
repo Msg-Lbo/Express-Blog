@@ -82,8 +82,9 @@ exports.getArticleList = async (req, res) => {
         return res.json({
             code: 200,
             msg: '获取成功',
+            succeed: true,
             data: {
-                list: result[0],
+                list: result,
                 // 页数, 向上取整
                 total: Math.ceil(result1[0].total / pageSize)
             }

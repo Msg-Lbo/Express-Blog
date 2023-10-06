@@ -1,6 +1,6 @@
 const query = require('../db');
-
-
+const GenId = require("../utils/genId")
+const genid = new GenId({ WorkerId: 1 });
 // 创建分类
 exports.createCategory = async (req, res) => {
     const { name } = req.body;
@@ -11,7 +11,9 @@ exports.createCategory = async (req, res) => {
         });
     }
     try {
-        const sql = `insert into categories (category_name) values ('${name}')`;
+        // 生成分类id
+        const id = genid.NextId();
+        const sql = `insert into categories (id,category_name) values ('${id}','${name}')`;
         const [result] = await query(sql);
         if (result.affectedRows) {
             return res.json({
@@ -40,6 +42,7 @@ exports.getAllCategory = async (req, res) => {
         return res.json({
             code: 200,
             msg: '获取成功',
+            succeed: true,
             data: result
         });
     } catch (err) {

@@ -2,24 +2,26 @@
     <div id="edit-article">
         <div class="edit-article-header">
             <n-form :model="articleFrom" :rules="rules">
-                <div class="left">
-                    <n-form-item path="title" label="标题">
+                <n-grid :cols="24" :x-gap="24">
+                    <n-form-item-gi :span="12" path="title" label="标题">
                         <n-input v-model:value="articleFrom.title" />
-                    </n-form-item>
-                    <n-form-item path="description" label="描述">
+                    </n-form-item-gi>
+                    <n-form-item-gi :span="12" path="description" label="描述">
                         <n-input v-model:value="articleFrom.description" />
-                    </n-form-item>
-                </div>
-                <div class="right">
-                    <n-form-item path="create_time" label="发布时间">
+                    </n-form-item-gi>
+                    <n-form-item-gi :span="6" path="create_time" label="发布时间">
                         <n-date-picker style="width: 100%;" v-model:value="articleFrom.create_time" type="datetime"
                             clearable />
-                    </n-form-item>
-                    <n-form-item path="update_time" label="最后更新时间">
+                    </n-form-item-gi>
+                    <n-form-item-gi :span="6" path="update_time" label="最后更新时间">
                         <n-date-picker style="width: 100%;" v-model:value="articleFrom.update_time" type="datetime"
                             clearable />
-                    </n-form-item>
-                </div>
+                    </n-form-item-gi>
+                    <n-form-item-gi :span="12" path="category_id" label="分类">
+                        <n-select v-model:value="articleFrom.category_id" placeholder="Select" :options="options"
+                            clearable />
+                    </n-form-item-gi>
+                </n-grid>
             </n-form>
         </div>
         <MdEditor v-model="articleFrom.content" :theme="theme" @on-save="saveArticle" />
@@ -31,15 +33,27 @@ import { ref, watch } from 'vue';
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { useThemeStore } from '@/store/theme'
-import { FormRules } from 'naive-ui';
-
-const articleFrom = ref({
+import { FormRules, useMessage } from 'naive-ui';
+import { saveArticleApi } from '@/apis/article';
+import { getAllCategoryApi } from '@/apis/category';
+const message = useMessage()
+interface ArticleFrom {
+    title: string,
+    description: string,
+    content: string,
+    category_id: number,
+    create_time: number,
+    update_time: number,
+}
+const articleFrom = ref<ArticleFrom>({
     title: '',
     description: '',
     content: '',
-    create_time: 0,
+    category_id: 0,
+    create_time: Date.now(),
     update_time: Date.now(),
 })
+articleFrom.value.description = articleFrom.value.content.slice(0, 100)
 function validateTime(): boolean {
     return articleFrom.value.create_time <= articleFrom.value.update_time
 }
@@ -65,6 +79,14 @@ const rules: FormRules = {
             trigger: 'blur',
         }
     ],
+    category_id: [
+        {
+            required: true,
+            message: '请选择分类',
+            trigger: ['blur', 'change'],
+            type: "number"
+        }
+    ],
     create_time: [
         {
             type: 'number',
@@ -83,7 +105,7 @@ const rules: FormRules = {
         {
             validator: validateTime,
             message: '更新时间需要大于发布时间',
-            trigger: ['blur', 'input'],
+            trigger: ['blur', 'change'],
         }
     ],
 }
@@ -94,20 +116,35 @@ watch(themeStore.$state, (_oldVal, newVal) => {
 })
 
 // 保存文章
-const saveArticle = () => {
-    console.log(articleFrom.value)
-}
-</script>
+const saveArticle = async () => {
+    console.log(articleFrom.value);
 
-<style lang='scss' scoped>
-#edit-article {
-    .edit-article-header {
-        ::v-deep(.n-form) {
-            display: grid;
-            // 宽度小于400px时，自动换行
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 8px,
-        }
+    const res = await saveArticleApi(articleFrom.value)
+    if (res.code === 200) {
+        message.success(res.msg)
     }
 }
-</style>
+// 获取分类
+const options = ref<any>([
+    {
+        label: '默认分类',
+        value: 0,
+    },
+])
+const getCategory = async () => {
+    const res = await getAllCategoryApi()
+    if (res.code === 200) {
+        const list = res.data.map((item: any) => {
+            return {
+                label: item.category_name,
+                value: item.id,
+            }
+        })
+        options.value.push(...list)
+    }
+}
+getCategory()
+
+</script>
+
+<style lang='scss' scoped></style>

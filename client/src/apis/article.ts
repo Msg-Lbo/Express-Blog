@@ -1,8 +1,20 @@
 import { $http } from '.'
 
+// 获取所有文章
+export const getAllArticleApi = async (page: number, pageSize: number) => {
+    return await $http({
+        url: '/article/get-all-article',
+        method: 'GET',
+        params: {
+            page,
+            pageSize
+        }
+    })
+}
+
 // 获取指定分类文章列表
-export const getArticles = (category?: number | string) => {
-    return $http({
+export const getArticles = async (category?: number | string) => {
+    return await $http({
         url: '/get-articles',
         method: 'GET',
         params: {
@@ -23,9 +35,9 @@ export const getArticle = (id: number) => {
 }
 
 // 保存文章
-export const saveArticle = (data: any) => {
+export const saveArticleApi = (data: { id?: number, title: string, description: string, content: string, category_id: number, create_time: number, update_time: number }) => {
     return $http({
-        url: '/save-article',
+        url: '/article/save-article',
         method: 'POST',
         data
     })
