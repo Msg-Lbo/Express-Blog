@@ -1,3 +1,4 @@
+import router from '@/router';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { createDiscreteApi } from "naive-ui";
 
@@ -21,6 +22,7 @@ export type BkResponse = {
 
 httpInstance.defaults.baseURL = 'http://localhost:9090/api/v1';
 
+// 响应拦截器
 export const $http = async (config: AxiosRequestConfig) => {
     loadingBar.start()
     try {
@@ -32,8 +34,10 @@ export const $http = async (config: AxiosRequestConfig) => {
                 errTitle = 'Bad Request'
                 message.error(bkResponse.msg || "请求错误")
             } else if (bkResponse.code === 401) {
+                console.log(bkResponse)
                 errTitle = 'Unauthorized'
                 message.error(bkResponse.msg || "未授权或未登录")
+                router.push('/login')
             } else if (bkResponse.code === 403) {
                 errTitle = 'Forbidden'
                 message.error(bkResponse.msg || "禁止访问")

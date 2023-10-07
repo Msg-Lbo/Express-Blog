@@ -18,36 +18,32 @@
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
-import {
-  LightModeFilled,
-  ModeNightFilled
-} from '@vicons/material'
-import { ref, watch } from 'vue'
-import { useThemeStore } from '@/store/theme'
-const themeStore = useThemeStore()
-const theme = ref<any>(themeStore.theme === 'dark' ? darkTheme : null)
-const active = ref<boolean>(themeStore.theme === 'dark' ? true : false)
+import { zhCN, dateZhCN, darkTheme } from "naive-ui";
+import { LightModeFilled, ModeNightFilled } from "@vicons/material";
+import { ref, watch } from "vue";
+import { useThemeStore } from "@/store/theme";
+const themeStore = useThemeStore();
+const theme = ref<any>(themeStore.theme === "dark" ? darkTheme : null);
+const active = ref<boolean>(themeStore.theme === "dark" ? true : false);
 // watch监听localStorage
 watch(themeStore.$state, (_oldVal, newVal) => {
-  if (newVal.theme === 'dark') {
-    theme.value = darkTheme
+  if (newVal.theme === "dark") {
+    theme.value = darkTheme;
   } else {
-    theme.value = null
+    theme.value = null;
   }
-})
-
+});
 
 // 切换主题
 const handleChange = () => {
   if (active.value) {
-    active.value = true
-    themeStore.toggleTheme()
+    active.value = true;
+    themeStore.toggleTheme();
   } else {
-    active.value = false
-    themeStore.toggleTheme()
+    active.value = false;
+    themeStore.toggleTheme();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

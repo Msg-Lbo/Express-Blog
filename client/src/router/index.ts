@@ -94,21 +94,30 @@ const router = createRouter({
 });
 
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-
   // 如果需要登录
   if (to.meta.requireAuth) {
     if (userStore.userInfo.account === '') {
       message.error('您还没有登录，请先登录');
       next('/login');
     } else {
-      userStore.isAdmin().then(res => {
+      userStore.isLogin().then(res => {
+        // 是否登陆过期
         if (res === true) {
-          // 是管理员，可以继续访问
-          next();
+          // 登陆未过期，判断是否是管理员
+          userStore.isAdmin().then(res => {
+            if (res === true) {
+              // 是管理员，可以继续访问
+              next();
+            } else {
+              message.error('您不是管理员，无法访问该页面');
+              next(from)
+            }
+          });
         } else {
-          message.error('您不是管理员，无法访问该页面');
+          message.error('登录已过期，请重新登录');
+          next('/login');
         }
       });
     }

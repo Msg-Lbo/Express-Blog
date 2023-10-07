@@ -1,5 +1,5 @@
 const query = require('../db');
-const GenId = require("../utils/genId")
+const GenId = require("../utils/genid")
 const genid = new GenId({ WorkerId: 1 });
 // 创建分类
 exports.createCategory = async (req, res) => {

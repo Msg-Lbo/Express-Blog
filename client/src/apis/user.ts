@@ -41,3 +41,10 @@ export const isAdminApi = async (account: string) => {
         data: { account }
     })
 }
+// 登陆是否过期
+export const isLoginExpiredApi = async () => {
+    return await $http({
+        url: '/user/is-login',
+        method: 'post'
+    })
+}

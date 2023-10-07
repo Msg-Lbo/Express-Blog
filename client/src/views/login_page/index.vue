@@ -10,7 +10,7 @@
                     <n-tab-pane name="signin" tab="登录">
                         <login-view></login-view>
                     </n-tab-pane>
-                    <n-tab-pane name="signup" tab="注册" disabled>
+                    <n-tab-pane name="signup" tab="注册">
                         <register-view></register-view>
                     </n-tab-pane>
                 </n-tabs>

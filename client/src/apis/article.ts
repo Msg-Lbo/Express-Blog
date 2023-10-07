@@ -35,10 +35,20 @@ export const getArticle = (id: number) => {
 }
 
 // 保存文章
-export const saveArticleApi = (data: { id?: number, title: string, description: string, content: string, category_id: number, create_time: number, update_time: number }) => {
+export const saveArticleApi = (data: { id?: number | null, title: string, description: string, content: string, category_id: number, create_time: number, update_time: number }) => {
     return $http({
         url: '/article/save-article',
         method: 'POST',
         data
+    })
+}
+// 删除文章
+export const deleteArticleApi = (id: number) => {
+    return $http({
+        url: '/article/delete-article-by-id',
+        method: 'POST',
+        data: {
+            id
+        }
     })
 }

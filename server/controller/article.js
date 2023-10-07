@@ -71,7 +71,7 @@ exports.getArticleList = async (req, res) => {
     }
     try {
         // 分类id转为对应的分类名
-        const sql = `select articles.id, title, description, content, categories.category_name as category_name, 
+        const sql = `select articles.id, title, description, content, category_id, categories.category_name as category_name, 
         create_time, update_time from articles 
         left join categories on articles.category_id=categories.id 
         order by create_time desc 

@@ -7,7 +7,7 @@ const authToken = async (req, res, next) => {
     // 如果没有token
     if (!token) {
         return res.json({
-            code: 400,
+            code: 401,
             msg: "请先登录",
         });
     }
@@ -30,7 +30,7 @@ const authToken = async (req, res, next) => {
         if (error.name === 'TokenExpiredError') {
             return res.json({
                 code: 401,
-                message: '登录已过期'
+                msg: '登录已过期'
             });
         }
         console.log("服务端错误：", error);

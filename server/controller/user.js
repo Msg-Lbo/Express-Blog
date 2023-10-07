@@ -25,50 +25,7 @@ exports.getAllUser = async (req, res) => {
         })
     }
 }
-// 获取验证码并设定验证码过期时间
-exports.getCaptcha = async (req, res) => {
-    const { email } = req.query;
-    if (!email) {
-        return res.json({
-            code: 400,
-            msg: '参数不完整'
-        });
-    }
-    // 判断邮箱格式是否正确
-    const reg = /^[a-z0-9]+@[a-z0-9]+\.[a-z]+$/i;
-    if (!reg.test(email)) {
-        return res.json({
-            code: 400,
-            msg: '邮箱格式不正确'
-        });
-    }
-    try {
-        // 生成验证码
-        const captcha = Math.random().toString().slice(2, 6);
-        // 发送验证码
-        sendMail(email, "验证码", captcha)
-        // 设定验证码过期时间1分钟
-        const expires = Date.now() + 60 * 1000;
-        // 将验证码和过期时间存入session
-        req.session.captcha = {
-            [email]: {
-                captcha,
-                expires
-            }
-        };
-        return res.json({
-            code: 200,
-            msg: '验证码发送成功',
-            succeed: true
-        });
-    } catch (err) {
-        console.log(err);
-        return res.json({
-            code: 500,
-            msg: '验证码发送失败'
-        });
-    }
-}
+
 // 创建用户
 exports.register = async (req, res) => {
     const { account, password, email, code } = req.body;
@@ -240,6 +197,16 @@ exports.isAdmin = async (req, res) => {
                 }
             })
         }
+        if (rows[0].identity === '游客') {
+            return res.json({
+                code: 200,
+                msg: '游客',
+                succeed: true,
+                data: {
+                    identity: rows[0].identity
+                }
+            })
+        }
     } catch (error) {
         console.log('服务端错误：', error);
         return res.json({
@@ -247,4 +214,12 @@ exports.isAdmin = async (req, res) => {
             msg: '服务器错误'
         })
     }
+}
+// 登陆是否过期
+exports.isLogin = async (req, res) => {
+    return res.json({
+        code: 200,
+        msg: '登陆未过期',
+        succeed: true
+    })
 }
