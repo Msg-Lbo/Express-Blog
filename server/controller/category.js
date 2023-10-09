@@ -37,7 +37,11 @@ exports.createCategory = async (req, res) => {
 // 获取所有分类
 exports.getAllCategory = async (req, res) => {
     try {
-        const sql = 'select * from categories';
+        // 获取所有分类以及分类下的文章数
+        const sql = `select categories.id, category_name, count(articles.id) 
+        as article_count from categories
+        left join articles on categories.id=articles.category_id
+        group by categories.id`;
         const [result] = await query(sql);
         return res.json({
             code: 200,

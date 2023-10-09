@@ -5,13 +5,13 @@
       <li v-for="link in links" :key="link.id">
         <div class="friends-item">
           <div class="img">
-            <img :src="link.logo" alt="图标没有惹">
+            <img :src="link.logo" alt="图标没有惹" />
           </div>
           <div class="info">
             <div class="name">{{ link.name }}</div>
             <div class="des">
               <n-ellipsis :line-clamp="1" :tooltip="false">
-                {{ link.des }}
+                {{ link.description }}
               </n-ellipsis>
             </div>
           </div>
@@ -22,41 +22,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { getFriendByPassApi } from "@/apis/friend";
+import { ref } from "vue";
 
 interface Link {
   id: number;
   name: string;
   url: string;
   logo: string;
-  des: string
+  description: string;
 }
 
-const links = ref<Link[]>([
-  {
-    id: 1,
-    name: 'Vue.js',
-    url: 'https://vuejs.org/',
-    logo: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg',
-    des: 'Vue.js - The Progressive JavaScript Framework'
-  },
-  {
-    id: 2,
-    name: 'React',
-    url: 'https://reactjs.org/',
-    logo: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg',
-    des: 'A JavaScript library for building user interfaces'
+const links = ref<Link[]>([]);
 
-  },
-  {
-    id: 3,
-    name: 'Angular',
-    url: 'https://angular.io/',
-    logo: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg',
-    des: 'One framework. Mobile & desktop.'
-
-  },
-]);
+// 获取已经通过审核的友链
+const getLinks = async () => {
+  const res = await getFriendByPassApi();
+  if (res.code === 200) {
+    links.value = res.data;
+  }
+};
+getLinks();
 </script>
 
 <style lang="scss" scoped>
@@ -93,7 +79,7 @@ const links = ref<Link[]>([
       .img {
         width: 60px;
         height: 60px;
-        border-radius:8px 0 0 8px;
+        border-radius: 8px 0 0 8px;
         overflow: hidden;
         margin-right: 8px;
 
@@ -103,7 +89,6 @@ const links = ref<Link[]>([
           margin-right: 8px;
         }
       }
-
     }
   }
 }

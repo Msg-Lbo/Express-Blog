@@ -48,43 +48,43 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import('@/views/admin_page/home_admin/index.vue'),
-      redirect: '/admin/dashboard',
+      redirect: '/dashboard',
       meta: {
         requireAuth: true
       },
       children: [
         {
-          path: '/admin/dashboard',
+          path: '/dashboard',
           name: 'dashboard',
           component: () => import('@/views/admin_page/dashboard/index.vue'),
         },
         {
-          path: '/admin/article-manager',
+          path: '/article-manager',
           name: 'article-manager',
           component: () => import('@/views/admin_page/article_admin/index.vue'),
         },
         {
-          path: '/admin/category-manager',
+          path: '/category-manager',
           name: 'category-manager',
           component: () => import('@/views/admin_page/category_admin/index.vue'),
         },
         {
-          path: '/admin/comments-manager',
+          path: '/comments-manager',
           name: 'comments-manager',
           component: () => import('@/views/admin_page/comments_admin/index.vue'),
         },
         {
-          path: '/admin/friends-manager',
+          path: '/friends-manager',
           name: 'friends-manager',
           component: () => import('@/views/admin_page/friends_admin/index.vue'),
         },
         {
-          path: '/admin/other-settings',
+          path: '/other-settings',
           name: 'other-settings',
           component: () => import('@/views/admin_page/settings_admin/index.vue'),
         },
         {
-          path: '/admin/images-manager',
+          path: '/images-manager',
           name: 'images-manager',
           component: () => import('@/views/admin_page/image_admin/index.vue'),
         }
