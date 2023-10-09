@@ -20,7 +20,7 @@ export type BkResponse = {
     succeed: boolean
 }
 
-httpInstance.defaults.baseURL = 'http://localhost:9090/api/v1';
+httpInstance.defaults.baseURL = 'http://192.168.2.13:9090/api/v1';
 
 // 响应拦截器
 export const $http = async (config: AxiosRequestConfig) => {
@@ -61,7 +61,7 @@ export const $http = async (config: AxiosRequestConfig) => {
     } catch (err) {
         if (err instanceof AxiosError) {
             loadingBar.error()
-            message.error(err.response?.data.message || "网络错误")
+            message.error(err.response?.data.message || err.message || "网络错误")
         }
         throw err
     } finally {

@@ -7,9 +7,7 @@
       <n-input v-model:value="loginForm.password" type="password" />
     </n-form-item-row>
   </n-form>
-  <n-button type="primary" :loading="loading" block secondary strong @click="handleLogin">
-    登录
-  </n-button>
+  <n-button type="primary" :loading="loading" block secondary strong @click="handleLogin"> 登录 </n-button>
 </template>
 
 <script setup lang="ts">
@@ -37,7 +35,7 @@ const handleLogin = async () => {
   const res = await loginApi(loginForm.value);
   if (res.code === 200) {
     message.success(res.msg);
-    router.push("/admin/dashboard");
+    router.push("/admin");
     console.log(res);
     userStore.setUserInfo(res.data);
   }
