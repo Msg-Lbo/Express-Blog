@@ -1,24 +1,24 @@
 import { $http } from '.'
 
 // 登陆
-export const loginApi = (data: { account: string, password: string }) => {
-    return $http({
+export const loginApi = async (data: { account: string, password: string }) => {
+    return await $http({
         url: '/user/login',
         method: 'POST',
         data
     })
 }
 // 注册
-export const registerApi = (data: { account: string, password: string, email: string, code: string }) => {
-    return $http({
+export const registerApi = async (data: { account: string, password: string, email: string, code: string }) => {
+    return await $http({
         url: '/user/register',
         method: 'POST',
         data
     })
 }
 // 获取邮箱验证码
-export const getEmailCodeApi = (email: string) => {
-    return $http({
+export const getEmailCodeApi = async (email: string) => {
+    return await $http({
         url: '/user/get-captcha',
         method: 'GET',
         params: {

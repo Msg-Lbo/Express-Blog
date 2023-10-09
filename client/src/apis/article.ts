@@ -24,8 +24,8 @@ export const getArticles = async (category?: number | string) => {
 }
 
 // 获取指定文章
-export const getArticle = (id: number) => {
-    return $http({
+export const getArticle = async (id: number) => {
+    return await $http({
         url: '/get-article',
         method: 'GET',
         params: {
@@ -35,16 +35,16 @@ export const getArticle = (id: number) => {
 }
 
 // 保存文章
-export const saveArticleApi = (data: { id?: number | null, title: string, description: string, content: string, category_id: number, create_time: number, update_time: number }) => {
-    return $http({
+export const saveArticleApi = async (data: { id?: number | null, title: string, description: string, content: string, category_id: number, create_time: number, update_time: number }) => {
+    return await $http({
         url: '/article/save-article',
         method: 'POST',
         data
     })
 }
 // 删除文章
-export const deleteArticleApi = (id: number) => {
-    return $http({
+export const deleteArticleApi = async (id: number) => {
+    return await $http({
         url: '/article/delete-article-by-id',
         method: 'POST',
         data: {

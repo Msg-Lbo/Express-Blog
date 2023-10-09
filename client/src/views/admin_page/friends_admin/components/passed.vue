@@ -2,24 +2,33 @@
   <div id="passed">
     <n-scrollbar style="max-height: calc(100vh - 266px)">
       <ul class="friends-list">
-        <li class="friends-item" v-for="(__, index) in 10" :key="index">
+        <li class="friends-item" v-for="item in friends" :key="item.id">
           <n-card size="small" embedded>
             <div class="content">
               <div class="logo">
-                <img src="http://q1.qlogo.cn/g?b=qq&nk=24130801&s=100" alt="" />
+                <img :src="item.logo" alt="logo不见了" />
               </div>
               <div class="info">
-                <div class="name">Lorem ipsum dolor sit amet.</div>
+                <div class="name">{{ item.name }}</div>
                 <div class="description">
                   <n-ellipsis :line-clamp="1">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste,
-                    tenetur?
+                    {{ item.description }}
                   </n-ellipsis>
                 </div>
               </div>
               <div class="actions">
                 <n-space justify="center">
-                  <n-button type="error" text>删除</n-button>
+                  <n-popover placement="bottom" trigger="click">
+                    <template #trigger>
+                      <n-button type="error" text>驳回</n-button>
+                    </template>
+                    <n-form-item label="请输入驳回理由">
+                      <n-input type="textarea" placeholder="理由..." v-model:value="reason" />
+                    </n-form-item>
+                    <div class="refuse-button">
+                      <n-button @click="refuseFriend(item.id)" type="error" text>提交</n-button>
+                    </div>
+                  </n-popover>
                 </n-space>
               </div>
             </div>
@@ -35,7 +44,29 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { getFriendApi, refuseFriendApi } from "@/apis/friend";
+import { useMessage } from "naive-ui";
 const page = ref(1);
+const message = useMessage();
+const reason = ref("");
+// 获取指定状态友链
+const friends = ref<any>([]);
+const getFriends = async (status: number) => {
+  const res = await getFriendApi(status);
+  if (res.code === 200) {
+    friends.value = res.data;
+  }
+};
+getFriends(1);
+
+// 驳回友链
+const refuseFriend = async (id: number) => {
+  const res = await refuseFriendApi(id, reason.value);
+  if (res.code === 200) {
+    message.success(res.msg);
+    getFriends(1);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
