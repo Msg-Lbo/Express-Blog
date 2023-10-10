@@ -53,7 +53,7 @@
       </n-table>
     </n-scrollbar>
     <div class="pagination">
-      <n-pagination v-model:page="page" :page-count="total" simple />
+      <n-pagination v-model:page="page" :page-count="total" @update:page="handlePageChange" simple />
     </div>
   </div>
 </template>
@@ -97,6 +97,11 @@ const deleteArticle = async (id: number) => {
     message.success(res.msg);
     getAllarticle();
   }
+};
+// 切换页码
+const handlePageChange = (num: number) => {
+  page.value = num;
+  getAllarticle();
 };
 </script>
 
