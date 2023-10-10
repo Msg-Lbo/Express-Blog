@@ -3,13 +3,13 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { createDiscreteApi } from "naive-ui";
 
 const { message, loadingBar } = createDiscreteApi(['message', 'loadingBar'])
-axios.defaults.withCredentials = true;
 
 export const httpInstance = axios.create({
     timeout: 6000,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    }
+    },
+    withCredentials: true,
 })
 
 // 请求拦截器
@@ -20,7 +20,7 @@ export type BkResponse = {
     succeed: boolean
 }
 
-httpInstance.defaults.baseURL = 'http://192.168.2.13:9090/api/v1';
+httpInstance.defaults.baseURL = 'http://127.0.0.1:9090/api/v1';
 
 // 响应拦截器
 export const $http = async (config: AxiosRequestConfig) => {

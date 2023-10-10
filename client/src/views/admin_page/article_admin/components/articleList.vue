@@ -15,15 +15,27 @@
         </thead>
         <tbody>
           <tr v-for="item in articleList" :key="item.id">
-            <td class="title">{{ item.title }}</td>
-            <td class="des">{{ item.description }}</td>
+            <td class="title">
+              <n-ellipsis :line-clamp="1" :tooltip="false">
+                {{ item.title }}
+              </n-ellipsis>
+            </td>
+            <td class="des">
+              <n-ellipsis :line-clamp="1" :tooltip="false">
+                {{ item.description }}
+              </n-ellipsis>
+            </td>
             <td class="category">{{ item.category_name }}</td>
             <td class="comment-num center">10086</td>
             <td class="create-time center">
-              <n-time :time="item.create_time"></n-time>
+              <n-ellipsis :line-clamp="1" :tooltip="false">
+                <n-time :time="item.create_time"></n-time>
+              </n-ellipsis>
             </td>
             <td class="update-time center">
-              <n-time :time="item.update_time"></n-time>
+              <n-ellipsis :line-clamp="1" :tooltip="false">
+                <n-time :time="item.update_time"></n-time>
+              </n-ellipsis>
             </td>
             <td class="actions center">
               <n-space justify="center">

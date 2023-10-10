@@ -35,9 +35,9 @@ const handleLogin = async () => {
   const res = await loginApi(loginForm.value);
   if (res.code === 200) {
     message.success(res.msg);
+    userStore.setUserInfo(res.data);
     router.push("/admin");
     console.log(res);
-    userStore.setUserInfo(res.data);
   }
 };
 </script>
