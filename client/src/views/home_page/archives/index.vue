@@ -1,18 +1,20 @@
 <template>
   <div id="archives">
     <n-scrollbar style="max-height: 860px" @scroll="handleScroll">
-      <n-timeline size="large">
-        <n-timeline-item content="嗯?" />
-        <n-timeline-item
-          v-for="item in articleList"
-          type="success"
-          :content="item.title"
-          :time="timestampToTime(item.create_time)"
-          :key="item.id"
-        />
-        <n-timeline-item type="warning" v-if="page >= count" content="没有了啦,别翻了" />
-        <n-timeline-item type="info" v-else content="等一等,还有一点点" />
-      </n-timeline>
+      <div class="archives-container">
+        <n-timeline size="large">
+          <n-timeline-item content="嗯?" />
+          <n-timeline-item
+            v-for="item in articleList"
+            type="success"
+            :content="item.title"
+            :time="timestampToTime(item.create_time)"
+            :key="item.id"
+          />
+          <n-timeline-item type="warning" v-if="page >= count" content="没有了啦,别翻了" />
+          <n-timeline-item type="info" v-else content="等一等,还有一点点" />
+        </n-timeline>
+      </div>
     </n-scrollbar>
   </div>
 </template>
@@ -58,12 +60,14 @@ const timestampToTime = (timestamp: number) => {
 </script>
 
 <style lang="scss" scoped>
+#archives {
+  .archives-container {
+  }
+}
+
 // 小于768px时
 @media screen and (max-width: 768px) {
   #archives {
-    ::v-deep(.n-scrollbar) {
-      max-height: 460px !important;
-    }
   }
 }
 </style>
