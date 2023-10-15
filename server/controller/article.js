@@ -189,3 +189,34 @@ exports.searchArticle = async (req, res) => {
         });
     }
 }
+
+// 获取文章详情
+exports.getArticleDetail = async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
+        return res.json({
+            code: 400,
+            msg: '参数不完整'
+        });
+    }
+    try {
+        // 分类id转为对应的分类名
+        const sql = `select articles.id, title, description, content, categories.category_name as category_name,
+        create_time, update_time from articles
+        left join categories on articles.category_id=categories.id
+        where articles.id=?`;
+        const [result] = await query(sql, [id]);
+        return res.json({
+            code: 200,
+            msg: '获取成功',
+            succeed: true,
+            data: result[0]
+        });
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            code: 500,
+            msg: '获取失败'
+        });
+    }
+}

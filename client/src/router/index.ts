@@ -13,6 +13,11 @@ const router = createRouter({
       redirect: "/list",
       children: [
         {
+          path: "/detail",
+          name: "detail",
+          component: () => import("@/views/home_page/article_detail/index.vue"),
+        },
+        {
           path: "/list",
           name: "list",
           component: () => import("@/views/home_page/article_list/index.vue"),

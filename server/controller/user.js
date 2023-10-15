@@ -136,8 +136,8 @@ exports.login = async (req, res) => {
         }
         // 生成token
         const token = jwt.sign(user, "CNMB@!#3+2-5dy0", { expiresIn: '1h' });
-        // token存入cookie
-        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 1000, sameSite: "none", secure: true, });
+        // token存入cookie //, sameSite: "none", secure: true 
+        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
         return res.json({
             code: 200,
             msg: '登陆成功',

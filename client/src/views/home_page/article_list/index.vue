@@ -2,7 +2,7 @@
   <div id="article-list">
     <n-scrollbar style="max-height: 860px">
       <ul class="card-list">
-        <li class="card-item" v-for="item in articleList" :key="item.id">
+        <li class="card-item" v-for="item in articleList" :key="item.id" @click="toArticle(item.id)">
           <n-card :title="item.title" size="small" hoverable>
             <div class="content">
               <div class="description">
@@ -52,6 +52,7 @@
 
 <script setup lang="ts">
 import { getAllArticleApi } from "@/apis/article";
+import router from "@/router";
 import {
   CategoryOutlined as categoryIcon,
   AccessTimeOutlined as timeIcon,
@@ -78,6 +79,16 @@ const handlePageChange = (num: number) => {
   getArticleList();
 };
 getArticleList();
+
+// 到文章
+const toArticle = (id: number) => {
+  router.push({
+    path: "/detail/",
+    query: {
+      id,
+    },
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -107,6 +118,18 @@ getArticleList();
     }
   }
 }
+// 小于1200px时
+@media screen and (max-width: 1200px) {
+  #article-list {
+    ::v-deep(.n-scrollbar) {
+      max-height: 640px !important;
+    }
+  }
+  .card-list {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  }
+}
+
 // 小于768px时，一列
 @media screen and (max-width: 768px) {
   #article-list {

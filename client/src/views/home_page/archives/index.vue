@@ -68,6 +68,9 @@ const timestampToTime = (timestamp: number) => {
 // 小于768px时
 @media screen and (max-width: 768px) {
   #archives {
+    ::v-deep(.n-scrollbar) {
+      max-height: calc(100vh - 120px) !important;
+    }
   }
 }
 </style>

@@ -5,11 +5,11 @@ const multer = require('multer');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const app = express();
-const host = '127.0.0.1'
+const host = '192.168.2.13'
 const port = '9090'
 
 const corsOptions = {
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173','http://192.168.2.13:5173'],
     methods: 'GET,POST',
     allowHeaders: 'Content-Type,Authorization',
     exposeHeaders: 'Content-length',

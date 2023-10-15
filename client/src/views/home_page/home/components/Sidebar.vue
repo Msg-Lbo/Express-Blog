@@ -19,50 +19,50 @@
   </div>
 </template>
 
-<script setup lang='ts'>
-import router from '@/router';
-import type { MenuOption } from 'naive-ui'
-import { ref } from 'vue';
-const activeKey = ref<string | null>(null)
+<script setup lang="ts">
+import router from "@/router";
+import type { MenuOption } from "naive-ui";
+import { ref } from "vue";
+const activeKey = ref<string | null>(null);
 const menuOptions: MenuOption[] = [
   {
-    label: '首页',
-    key: 'list',
+    label: "首页",
+    key: "list",
   },
   {
-    label: '分类',
-    key: 'categories',
+    label: "分类",
+    key: "categories",
   },
   {
-    label: '时间轴',
-    key: 'archives',
+    label: "时间轴",
+    key: "archives",
   },
   {
-    label: '友联',
-    key: 'friends',
+    label: "友联",
+    key: "friends",
   },
   {
-    label: '关于',
-    key: 'about',
+    label: "关于",
+    key: "about",
   },
-]
+];
+
 // 菜单切换触发
 const handleMenuChange = (key: string) => {
-  activeKey.value = key
-  router.push({ name: key })
-}
+  activeKey.value = key;
+  router.push({ name: key });
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 #sidebar {
   height: 100vh;
   font-weight: bold;
-  background-image: url('@/assets/images/sidebar-bg-light-2.png');
+  background-image: url("@/assets/images/sidebar-bg-light-2.png");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
   position: relative;
-
   .logo {
     display: flex;
     justify-content: center;
@@ -87,6 +87,7 @@ const handleMenuChange = (key: string) => {
   }
 
   .menu {
+    margin: 0 auto;
     text-align: center;
   }
 
@@ -103,12 +104,23 @@ const handleMenuChange = (key: string) => {
   }
 }
 
-// 宽度小于 768px 时，头像变小
-@media screen and (max-width: 768px) {
+// 宽度小于 1200px 时
+@media screen and (max-width: 1200px) {
   #sidebar {
     height: auto;
     background-position: top;
+    .logo {
+      img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
+}
 
+// 宽度小于 768px 时，头像变小
+@media screen and (max-width: 768px) {
+  #sidebar {
     .logo {
       img {
         width: 50px;

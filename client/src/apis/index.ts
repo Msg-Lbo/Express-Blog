@@ -20,7 +20,7 @@ export type BkResponse = {
     succeed: boolean
 }
 
-httpInstance.defaults.baseURL = 'http://127.0.0.1:9090/api/v1';
+httpInstance.defaults.baseURL = 'http://192.168.2.13:9090/api/v1';
 
 // 响应拦截器
 export const $http = async (config: AxiosRequestConfig) => {

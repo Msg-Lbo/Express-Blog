@@ -52,3 +52,13 @@ export const deleteArticleApi = async (id: number) => {
         }
     })
 }
+// 获取文章详情
+export const getArticleDetailApi = async (id: number | string) => {
+    return await $http({
+        url: '/article/get-article-detail',
+        method: 'GET',
+        params: {
+            id
+        }
+    })
+}
