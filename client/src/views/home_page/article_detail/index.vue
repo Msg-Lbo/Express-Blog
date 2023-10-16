@@ -7,14 +7,28 @@
           <MdPreview :editorId="pId" :modelValue="articleDetail?.content" :theme="theme" previewTheme="github" />
         </n-scrollbar>
       </div>
-      <div class="catalog">
-        <MdCatalog :editorId="pId" :scrollElement="scrollElement" @click="handleClickCatalog" />
+      <div class="right-bar">
+        <div class="catalog">
+          <n-card size="small" :bordered="false" hoverable>
+            <h3>目录</h3>
+            <n-scrollbar style="max-height: 264px">
+              <MdCatalog :editorId="pId" :scrollElement="scrollElement" @click="handleClickCatalog" />
+            </n-scrollbar>
+          </n-card>
+        </div>
+        <div class="actions">
+          <n-button>上一篇</n-button>
+          <n-button>下一篇</n-button>
+          <n-button @click="showCommentsContainer">评论列表</n-button>
+        </div>
       </div>
     </div>
+    <comments ref="commentsContainer" />
   </div>
 </template>
 
 <script setup lang="ts">
+import comments from "./components/comments.vue";
 import { getArticleDetailApi } from "@/apis/article";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -60,6 +74,10 @@ const handleClickCatalog = (e: MouseEvent, t: TocItem) => {
     });
   }
 };
+const commentsContainer = ref()
+const showCommentsContainer = () => {
+  commentsContainer.value.show()
+};
 onMounted(() => {
   getArticleDetail();
   scrollElement.value = document.querySelector(".content .n-scrollbar .n-scrollbar-container");
@@ -70,9 +88,40 @@ onMounted(() => {
 #detail {
   .article-container {
     display: flex;
-    .content,
-    .catalog {
-      width: 100%;
+    justify-content: space-between;
+
+    .content {
+      width: 78%;
+    }
+
+    .right-bar {
+      width: 20%;
+      padding-top: 65px;
+
+      .catalog {
+        height: 320px;
+
+        ::v-deep(.n-card) {
+          height: 100%;
+        }
+      }
+
+      .comments {
+        height: 320px;
+
+        ::v-deep(.n-card) {
+          height: 100%;
+        }
+      }
+
+      .actions {
+        margin-top: 50px;
+
+        ::v-deep(.n-button) {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }
@@ -81,7 +130,11 @@ onMounted(() => {
 @media screen and (max-width: 1200px) {
   #detail {
     .article-container {
-      .catalog {
+      .content {
+        width: 100%;
+      }
+
+      .right-bar {
         display: none;
       }
     }

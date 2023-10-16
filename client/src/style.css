@@ -60,3 +60,31 @@ table {
 p {
   word-wrap: break-word
 }
+
+&::-webkit-scrollbar {
+  width: 6px;
+  background-color: #eee;
+}
+
+&::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+
+  &:hover {
+    background-color: #a8a8a8;
+  }
+
+  &:active {
+    background-color: #787878;
+  }
+}
+
+& {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #eee;
+}
+
+.custom-scrollbar {
+  overflow: auto;
+  scrollbar-width: thin; /* Firefox需要的样式 */
+  scrollbar-color: #888 #f1f1f1; /* Firefox需要的样式 */
+}

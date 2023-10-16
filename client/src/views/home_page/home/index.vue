@@ -24,5 +24,10 @@ import sidebar from "./components/Sidebar.vue";
 <style lang="scss" scoped>
 #home {
   height: 100vh;
+
+  .left,
+  .right {
+    border-right: 1px solid #eaeaea;
+  }
 }
 </style>

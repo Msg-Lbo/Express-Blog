@@ -53,7 +53,7 @@ const handleChange = () => {
 
 .switch {
   position: absolute;
-  right: 20px;
+  right: 30px;
   bottom: 20px;
 }
 </style>

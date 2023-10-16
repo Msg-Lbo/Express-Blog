@@ -9,7 +9,7 @@ const host = '192.168.2.13'
 const port = '9090'
 
 const corsOptions = {
-    origin: ['http://localhost:5173','http://192.168.2.13:5173'],
+    origin: ['http://localhost:5173','http://192.168.2.13:5173','http://localhost:3000','http://192.168.2.13:3000'],
     methods: 'GET,POST',
     allowHeaders: 'Content-Type,Authorization',
     exposeHeaders: 'Content-length',
