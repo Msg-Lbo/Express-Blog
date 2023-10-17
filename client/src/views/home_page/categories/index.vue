@@ -31,6 +31,9 @@ getCategoryList();
 </script>
 
 <style lang="scss" scoped>
+#categories{
+  height: 860px;
+}
 .card-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -50,6 +53,7 @@ getCategoryList();
 // 小于768px时
 @media screen and (max-width: 768px) {
   #categories {
+    height: auto;
     ::v-deep(.n-scrollbar) {
       max-height: 460px !important;
     }

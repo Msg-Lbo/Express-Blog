@@ -200,9 +200,12 @@ exports.getArticleDetail = async (req, res) => {
         });
     }
     try {
-        // 分类id转为对应的分类名
+        // 分类id转为对应的分类名,该文章的上一篇和下一篇的id
         const sql = `select articles.id, title, description, content, categories.category_name as category_name,
-        create_time, update_time from articles
+        create_time, update_time,
+        (select id from articles where id<${id} order by id desc limit 1) as pre_id,
+        (select id from articles where id>${id} order by id asc limit 1) as next_id
+        from articles
         left join categories on articles.category_id=categories.id
         where articles.id=?`;
         const [result] = await query(sql, [id]);

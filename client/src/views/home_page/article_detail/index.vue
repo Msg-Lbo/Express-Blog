@@ -17,8 +17,8 @@
           </n-card>
         </div>
         <div class="actions">
-          <n-button>上一篇</n-button>
-          <n-button>下一篇</n-button>
+          <n-button :disabled="!articleDetail?.pre_id" @click="toOtherPage(articleDetail?.pre_id!)">上一篇</n-button>
+          <n-button :disabled="!articleDetail?.next_id" @click="toOtherPage(articleDetail?.next_id!)">下一篇</n-button>
           <n-button @click="showCommentsContainer">评论列表</n-button>
         </div>
       </div>
@@ -36,8 +36,9 @@ import { MdPreview, MdCatalog } from "md-editor-v3";
 import "md-editor-v3/lib/preview.css";
 import { useThemeStore } from "@/store/theme";
 import { TocItem } from "md-editor-v3/lib/types/MdCatalog/MdCatalog";
+import router from "@/router";
 const route = useRoute();
-const id = route.query.id as string;
+const id = ref(route.query.id as string);
 const containerRef = ref<HTMLElement | undefined>(undefined);
 const themeStore = useThemeStore();
 const theme = ref<any>(themeStore.$state.theme);
@@ -52,15 +53,32 @@ interface Detail {
   category_name: string;
   create_time: number;
   update_time: number;
+  pre_id: number;
+  next_id: number;
 }
 const pId = "preview-only";
 const scrollElement = ref();
 const articleDetail = ref<Detail>();
+// 获取文章详情
 const getArticleDetail = async () => {
-  const res = await getArticleDetailApi(id);
+  const res = await getArticleDetailApi(id.value);
   if (res.code === 200) {
     articleDetail.value = res.data;
   }
+};
+// 跳转到其他页面
+const toOtherPage = (otherId: number) => {
+  console.log(id.value, otherId);
+
+  // 修改路由参数
+  router.push({
+    path: "/detail/",
+    query: {
+      id: otherId,
+    },
+  });
+  id.value = otherId.toString();
+  getArticleDetail();
 };
 // 点击目录
 const handleClickCatalog = (e: MouseEvent, t: TocItem) => {
@@ -74,9 +92,9 @@ const handleClickCatalog = (e: MouseEvent, t: TocItem) => {
     });
   }
 };
-const commentsContainer = ref()
+const commentsContainer = ref();
 const showCommentsContainer = () => {
-  commentsContainer.value.show()
+  commentsContainer.value.show();
 };
 onMounted(() => {
   getArticleDetail();
