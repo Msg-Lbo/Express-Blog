@@ -1,6 +1,6 @@
 <template>
   <div id="categories">
-    <n-scrollbar style="max-height: 860px">
+    <n-scrollbar style="max-height: calc(100vh - 80px)">
       <ul class="card-list">
         <li class="card-item" v-for="item in categoryList" :key="item.id">
           <n-card size="small" hoverable>
@@ -32,7 +32,7 @@ getCategoryList();
 
 <style lang="scss" scoped>
 #categories{
-  height: 860px;
+  height: calc(100vh - 80px);
 }
 .card-list {
   display: grid;

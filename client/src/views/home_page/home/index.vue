@@ -25,8 +25,7 @@ import sidebar from "./components/Sidebar.vue";
 #home {
   height: 100vh;
 
-  .left,
-  .right {
+  .left {
     border-right: 1px solid #eaeaea;
   }
 }

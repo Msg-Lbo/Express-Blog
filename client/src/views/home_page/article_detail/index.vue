@@ -11,7 +11,7 @@
         <div class="catalog">
           <n-card size="small" :bordered="false" hoverable>
             <h3>目录</h3>
-            <n-scrollbar style="max-height: 264px">
+            <n-scrollbar style="max-height: calc(100vh - 460px)">
               <MdCatalog :editorId="pId" :scrollElement="scrollElement" @click="handleClickCatalog" />
             </n-scrollbar>
           </n-card>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import comments from "./components/comments.vue";
+import Comments from "./components/comments.vue";
 import { getArticleDetailApi } from "@/apis/article";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -117,15 +117,7 @@ onMounted(() => {
       padding-top: 65px;
 
       .catalog {
-        height: 320px;
-
-        ::v-deep(.n-card) {
-          height: 100%;
-        }
-      }
-
-      .comments {
-        height: 320px;
+        height: calc(100vh - 400px);
 
         ::v-deep(.n-card) {
           height: 100%;

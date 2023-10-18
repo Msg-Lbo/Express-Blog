@@ -1,6 +1,6 @@
 <template>
   <div id="article-list">
-    <n-scrollbar style="max-height: 860px">
+    <n-scrollbar style="max-height: calc(100vh - 80px)">
       <ul class="card-list">
         <li class="card-item" v-for="item in articleList" :key="item.id" @click="toArticle(item.id)">
           <n-card :title="item.title" size="small" hoverable>
@@ -96,7 +96,7 @@ const toArticle = (id: number) => {
   position: relative;
   .pagination {
     position: absolute;
-    bottom: -40px;
+    bottom: -48px;
   }
 }
 

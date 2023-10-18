@@ -1,6 +1,6 @@
 <template>
   <div id="archives">
-    <n-scrollbar style="max-height: 860px" @scroll="handleScroll">
+    <n-scrollbar style="max-height: calc(100vh - 80px)" @scroll="handleScroll">
       <div class="archives-container">
         <n-timeline size="large">
           <n-timeline-item content="嗯?" />
