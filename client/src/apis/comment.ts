@@ -1,7 +1,7 @@
 import { $http } from '.'
 
 // 发送评论
-export const sendCommentApi = async (data: { article_id: string, content: string, create_time: number, parent_id: number, nickname: string, email: string, code: string }) => {
+export const sendCommentApi = async (data: { article_id: string | number, content: string, create_time: number, parent_id: number, nickname: string, email: string, code: string }) => {
     return await $http({
         url: '/comment/send-comment',
         method: 'POST',

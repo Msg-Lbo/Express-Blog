@@ -5,8 +5,10 @@ const query = require('../db');
 exports.sendComment = async (req, res) => {
     const { article_id, content, create_time, parent_id, nickname, email, code } = req.body;
     try {
+        // 验证码小写
+        lowerCaseCode = code.toLowerCase();
         // 判断验证码是否正确
-        if (req.session.captcha !== code) {
+        if (req.session.captcha !== lowerCaseCode) {
             return res.json({
                 code: 400,
                 msg: '验证码错误'

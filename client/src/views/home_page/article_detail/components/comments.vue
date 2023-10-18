@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="comments-list">
-          <comments-list ref="commentsListRef" @toComment="toComment" :articleId="parseInt(commentForm.article_id)" />
+          <comments-list ref="commentsListRef" @toComment="toComment" />
         </div>
       </n-drawer-content>
     </n-drawer>
@@ -53,11 +53,11 @@ const route = useRoute();
 const message = useMessage();
 const captcha = ref();
 const commentForm = ref({
-  article_id: route.query.id as string,
-  create_time: Date.now(),
+  article_id: 0,
+  create_time: 0,
   parent_id: 0,
-  nickname: "",
-  email: "",
+  nickname: localStorage.getItem("nickname") || "",
+  email: localStorage.getItem("email") || "",
   content: "",
   code: "",
 });
@@ -90,16 +90,20 @@ const sendComment = async () => {
     message.error("不能为空");
     return;
   }
+  commentForm.value.create_time = Date.now();
+  commentForm.value.article_id = parseInt(route.query.id as string);
+  localStorage.setItem("nickname", commentForm.value.nickname);
+  localStorage.setItem("email", commentForm.value.email);
+  getCaptcha();
   const res = await sendCommentApi(commentForm.value);
   if (res.code === 200) {
     message.success(res.msg);
     // 清空表单
     commentForm.value.content = "";
+    commentForm.value.code = "";
     // 执行子组件中的方法
     commentsListRef.value.getCommentList();
-    getCaptcha();
   }
-  getCaptcha();
 };
 // 取消回复
 const cancelReply = () => {

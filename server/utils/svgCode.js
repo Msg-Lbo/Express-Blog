@@ -15,12 +15,10 @@ const refreshCapacht = async (req, res) => {
             // 高度
             height: 34,
             // 验证码字符中排除 0o1i
-            ignoreChars: '0o1i',
-            // 验证码不分大小写
-            ignoreCase: true
+            ignoreChars: '0o1I',
         });
-        
-        req.session.captcha = cap.text;// session 存储验证码数值
+        code = cap.text.toLowerCase();
+        req.session.captcha = code;// session 存储验证码数值
         res.type('svg');// 响应的类型
         res.json({
             code: 200,
