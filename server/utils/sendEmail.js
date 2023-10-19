@@ -39,10 +39,10 @@ const sendMail = (to, subject, params) => {
     try {
         nodeMail.sendMail(mail, (err, info) => {
             if (err) {
-                console.log("发送失败", err)
+                // console.log("发送失败", err)
                 return err
             }
-            console.log("发送成功")
+            // console.log("发送成功")
             return info
         })
     } catch (e) {

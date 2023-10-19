@@ -18,10 +18,12 @@
         </div>
       </li>
     </ul>
+    <model-form></model-form>
   </div>
 </template>
 
 <script setup lang="ts">
+import modelForm from './components/Model.vue'
 import { getFriendByPassApi } from "@/apis/friend";
 import { ref } from "vue";
 
