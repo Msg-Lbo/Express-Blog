@@ -17,8 +17,10 @@ const refreshCapacht = async (req, res) => {
             // 验证码字符中排除 0o1i
             ignoreChars: '0o1I',
         });
-        code = cap.text.toLowerCase();
-        req.session.captcha = code;// session 存储验证码数值
+        if (req.session.captcha !== cap.text.toLowerCase()) {
+            req.session.captcha = cap.text.toLowerCase();
+        }
+        console.log("存:", req.session);
         res.type('svg');// 响应的类型
         res.json({
             code: 200,

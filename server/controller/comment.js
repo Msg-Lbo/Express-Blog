@@ -7,6 +7,7 @@ exports.sendComment = async (req, res) => {
     try {
         // 验证码小写
         lowerCaseCode = code.toLowerCase();
+        console.log(req.session);
         // 判断验证码是否正确
         if (req.session.captcha !== lowerCaseCode) {
             return res.json({
@@ -16,7 +17,6 @@ exports.sendComment = async (req, res) => {
         }
         const sql = 'insert into comments(article_id, content, create_time, parent_id, nickname, email) values(?, ?, ?, ?, ?, ?)';
         const [result] = await query(sql, [article_id, content, create_time, parent_id, nickname, email]);
-        console.log(result);
         if (result.affectedRows === 1) {
             return res.json({
                 code: 200,
@@ -62,6 +62,63 @@ exports.getCommentList = async (req, res) => {
             msg: '获取评论列表成功',
             succeed: true,
             data: tree
+        });
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            code: 500,
+            msg: '服务端错误'
+        });
+    }
+}
+
+// 分页获取所有评论
+exports.getAllComment = async (req, res) => {
+    const { page, pageSize } = req.query;
+    try {
+        // 获取article_id对应的文章名
+        const sql = `select comments.id, comments.article_id, comments.content, comments.create_time, 
+        comments.parent_id, comments.nickname, comments.email, articles.title 
+        as article_title from comments 
+        left join articles on comments.article_id = articles.id 
+        order by comments.id desc limit ?, ?`
+        const [result] = await query(sql, [(page - 1) * parseInt(pageSize), parseInt(pageSize)]);
+        const sql2 = 'select count(*) as total from comments';
+        const [result2] = await query(sql2);
+        return res.json({
+            code: 200,
+            msg: '获取评论列表成功',
+            succeed: true,
+            data: result,
+            // 向上取整
+            total: Math.ceil(result2[0].total / parseInt(pageSize))
+        });
+    } catch (err) {
+        console.log(err);
+        return res.json({
+            code: 500,
+            msg: '服务端错误'
+        });
+    }
+}
+
+// 删除评论
+exports.deleteCommentById = async (req, res) => {
+    const { id } = req.body;
+    try {
+        // 删除评论,并且删除comments表中parent_id为该评论id的数据
+        const sql = `delete from comments where id=? or parent_id=?`;
+        const [result] = await query(sql, [id, id]);
+        if (result.affectedRows !== 0) {
+            return res.json({
+                code: 200,
+                msg: '删除成功',
+                succeed: true
+            });
+        }
+        return res.json({
+            code: 400,
+            msg: '删除失败'
         });
     } catch (err) {
         console.log(err);

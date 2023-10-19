@@ -22,7 +22,7 @@
                     <n-icon size="15">
                       <msg-icon />
                     </n-icon>
-                    <span>10086</span>
+                    <span>{{ item.comment_count }}</span>
                   </span>
                   <span class="view icon">
                     <n-icon size="15">

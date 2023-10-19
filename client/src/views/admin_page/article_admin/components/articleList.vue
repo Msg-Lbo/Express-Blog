@@ -1,7 +1,7 @@
 <template>
   <div id="article-list">
     <n-scrollbar style="max-height: calc(100vh - 266px)">
-      <n-table :single-line="false" striped>
+      <n-table :single-line="false" striped size="small">
         <thead>
           <tr>
             <th class="title">文章标题</th>
@@ -16,26 +16,18 @@
         <tbody>
           <tr v-for="item in articleList" :key="item.id">
             <td class="title">
-              <n-ellipsis :line-clamp="1" :tooltip="false">
                 {{ item.title }}
-              </n-ellipsis>
             </td>
             <td class="des">
-              <n-ellipsis :line-clamp="1" :tooltip="false">
                 {{ item.description }}
-              </n-ellipsis>
             </td>
             <td class="category">{{ item.category_name }}</td>
-            <td class="comment-num center">10086</td>
+            <td class="comment-num center">{{ item.comment_count }}</td>
             <td class="create-time center">
-              <n-ellipsis :line-clamp="1" :tooltip="false">
                 <n-time :time="item.create_time"></n-time>
-              </n-ellipsis>
             </td>
             <td class="update-time center">
-              <n-ellipsis :line-clamp="1" :tooltip="false">
                 <n-time :time="item.update_time"></n-time>
-              </n-ellipsis>
             </td>
             <td class="actions center">
               <n-space justify="center">
@@ -63,7 +55,7 @@ import { ref } from "vue";
 import { deleteArticleApi, getAllArticleApi } from "@/apis/article";
 import { useMessage } from "naive-ui";
 const page = ref(1);
-const pageSize = ref(13);
+const pageSize = ref(17);
 const total = ref(100);
 const articleList = ref<any>([]);
 const message = useMessage();
@@ -91,7 +83,6 @@ const selectTabs = (data: any) => {
 };
 // 删除文章
 const deleteArticle = async (id: number) => {
-  console.log(id);
   const res = await deleteArticleApi(id);
   if (res.code === 200) {
     message.success(res.msg);
@@ -107,12 +98,18 @@ const handlePageChange = (num: number) => {
 
 <style lang="scss" scoped>
 #article-admin {
-  height: 100%;
-
-  ::v-deep(.n-card) {
-    background-color: transparent;
+  .title{
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
   }
-
+  .des {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+  }
   .center {
     text-align: center;
   }
@@ -120,6 +117,9 @@ const handlePageChange = (num: number) => {
   .update-time,
   .create-time {
     width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
   }
 
   .comment-num,
@@ -133,8 +133,8 @@ const handlePageChange = (num: number) => {
   }
 }
 
-// 宽度小于800px时，表格的样式
-@media screen and (max-width: 800px) {
+// 宽度小于1000px时，表格的样式
+@media screen and (max-width: 1000px) {
   #article-admin {
     .des,
     .comment-num,

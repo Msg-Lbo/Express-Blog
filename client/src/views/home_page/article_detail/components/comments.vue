@@ -1,6 +1,6 @@
 <template>
   <div id="comments">
-    <n-drawer v-model:show="state.active" :width="400" :placement="'left'" :show-mask="false">
+    <n-drawer v-model:show="state.active" :width="450" :placement="'left'" :show-mask="false">
       <n-drawer-content title="抽屉一样的评论区">
         <div class="header-content">
           <div class="user-info">
@@ -61,8 +61,6 @@ const commentForm = ref({
   content: "",
   code: "",
 });
-// 是否是回复
-const isReply = ref(commentForm.value.parent_id !== 0 ? true : false);
 // 显示评论区
 const state = ref({
   active: false,
@@ -81,6 +79,7 @@ const getCaptcha = async () => {
 const commentsListRef = ref();
 // 发送评论
 const sendComment = async () => {
+  getCaptcha();
   if (
     !commentForm.value.nickname ||
     !commentForm.value.email ||
@@ -94,13 +93,13 @@ const sendComment = async () => {
   commentForm.value.article_id = parseInt(route.query.id as string);
   localStorage.setItem("nickname", commentForm.value.nickname);
   localStorage.setItem("email", commentForm.value.email);
-  getCaptcha();
   const res = await sendCommentApi(commentForm.value);
   if (res.code === 200) {
     message.success(res.msg);
     // 清空表单
     commentForm.value.content = "";
     commentForm.value.code = "";
+    commentForm.value.parent_id = 0;
     // 执行子组件中的方法
     commentsListRef.value.getCommentList();
   }
@@ -109,7 +108,6 @@ const sendComment = async () => {
 const cancelReply = () => {
   commentForm.value.parent_id = 0;
   commentForm.value.content = "";
-  isReply.value = false;
 };
 
 // 获取子组件传递的值

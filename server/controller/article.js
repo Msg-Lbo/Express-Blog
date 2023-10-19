@@ -70,13 +70,15 @@ exports.getArticleList = async (req, res) => {
         });
     }
     try {
-        // 分类id转为对应的分类名
-        const sql = `select articles.id, title, description, content, category_id, categories.category_name as category_name, 
-        create_time, update_time from articles 
-        left join categories on articles.category_id=categories.id 
-        order by create_time desc 
-        limit  ${(page - 1) * pageSize}, ${pageSize}`;
-        const [result] = await query(sql);
+        // 分类id转为对应的分类名,文章评论数
+        const sql = `select articles.id, title, description, articles.content, categories.category_name as category_name,
+        articles.create_time, articles.update_time, count(comments.id) as comment_count from articles
+        left join categories on articles.category_id=categories.id
+        left join comments on articles.id=comments.article_id
+        group by articles.id
+        order by articles.create_time desc
+        limit ?, ?`;
+        const [result] = await query(sql, [(page - 1) * parseInt(pageSize), parseInt(pageSize)]);
         const sql1 = 'select count(*) as total from articles';
         const [result1] = await query(sql1);
         return res.json({
