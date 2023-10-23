@@ -8,9 +8,6 @@
                 <n-tab-pane name="email server" tab="邮件服务">
                     Hey Jude
                 </n-tab-pane>
-                <n-tab-pane name="jay chou" tab="周杰伦">
-                    七里香
-                </n-tab-pane>
             </n-tabs>
         </n-card>
     </div>

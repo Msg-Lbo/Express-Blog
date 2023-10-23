@@ -71,7 +71,7 @@ exports.getArticleList = async (req, res) => {
     }
     try {
         // 分类id转为对应的分类名,文章评论数
-        const sql = `select articles.id, title, description, articles.content, categories.category_name as category_name,
+        const sql = `select articles.id, articles.category_id, title, description, articles.content, categories.category_name as category_name,
         articles.create_time, articles.update_time, count(comments.id) as comment_count from articles
         left join categories on articles.category_id=categories.id
         left join comments on articles.id=comments.article_id

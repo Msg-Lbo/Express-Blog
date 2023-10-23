@@ -1,6 +1,9 @@
 <template>
   <div id="friends">
     <h1>友情链接</h1>
+    <div class="filed-button">
+      <n-button @click="handleFiled" type="success" size="small">申请友链</n-button>
+    </div>
     <ul class="friends-list">
       <li v-for="link in links" :key="link.id">
         <div class="friends-item">
@@ -18,14 +21,14 @@
         </div>
       </li>
     </ul>
-    <model-form></model-form>
+    <add-friend-modal ref="addFriendModalRef" />
   </div>
 </template>
 
 <script setup lang="ts">
-import modelForm from './components/Model.vue'
+import addFriendModal from './components/Model.vue'
 import { getFriendByPassApi } from "@/apis/friend";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 interface Link {
   id: number;
@@ -35,20 +38,32 @@ interface Link {
   description: string;
 }
 
-const links = ref<Link[]>([]);
+onMounted(() => {
+  getLinks();
+})
 
 // 获取已经通过审核的友链
+const links = ref<Link[]>([]);
 const getLinks = async () => {
   const res = await getFriendByPassApi();
   if (res.code === 200) {
     links.value = res.data;
   }
 };
-getLinks();
+const addFriendModalRef = ref()
+const handleFiled = () => {
+  addFriendModalRef.value.showModalFn()
+
+}
 </script>
 
 <style lang="scss" scoped>
 #friends {
+  .filed-button{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
   .friends-list {
     display: grid;
     // 小于 800px 一列，大于 800px 两列, 最小宽度 300px, 最大宽度 1fr

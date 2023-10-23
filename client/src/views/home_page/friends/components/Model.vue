@@ -19,11 +19,13 @@
             <n-form-item-gi :span="12" label="邮箱" path="email">
               <n-input v-model:value="friendForm.email" placeholder="Input" />
             </n-form-item-gi>
-            <n-form-item-gi :span="7" label="验证码" path="captcha">
-              <n-input v-model:value="friendForm.captcha" placeholder="Input" />
+            <n-form-item-gi :span="7" label="验证码" path="code">
+              <n-input v-model:value="friendForm.code" placeholder="Input" />
             </n-form-item-gi>
             <n-form-item-gi :span="5">
-              <n-button style="width: 100%">获取验证码</n-button>
+              <n-button style="width: 100%" @click="getCaptcha" :disabled="isGet">
+                {{ isGet ? time + 's后再次获取' : '获取验证码' }}
+              </n-button>
             </n-form-item-gi>
           </n-grid>
         </n-form>
@@ -34,25 +36,29 @@
 </template>
 
 <script setup lang="ts">
-import { FormRules } from "naive-ui";
+import { addFriendApi } from "@/apis/friend";
+import { getEmailCodeApi } from "@/apis/user";
+import { FormRules, useMessage } from "naive-ui";
 import { ref } from "vue";
-
-const showModal = ref(true);
+const message = useMessage()
+const showModal = ref(false);
+const isGet = ref(false);
+const time = ref(60);
 interface ModelType {
-  name: string | null;
-  link: string | null;
-  logo: string | null;
-  description: string | null;
-  email: string | null;
-  captcha: string | null;
+  name: string;
+  link: string;
+  logo: string;
+  description: string;
+  email: string;
+  code: string;
 }
 const friendForm = ref<ModelType>({
-  name: null,
-  link: null,
-  logo: null,
-  description: null,
-  email: null,
-  captcha: null,
+  name: "",
+  link: "",
+  logo: "",
+  description: "",
+  email: "",
+  code: "",
 });
 
 const rules: FormRules = {
@@ -70,19 +76,52 @@ const rules: FormRules = {
     { required: true, message: "请输入邮箱", trigger: ["blur", "input"] },
     { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change", "input"] },
   ],
-  captcha: [{ required: true, message: "请输入验证码", trigger: ["blur", "input"] }],
+  code: [{ required: true, message: "请输入验证码", trigger: ["blur", "input"] }],
 };
 
+// 获取验证码
+const getCaptcha = async () => {
+  if (!friendForm.value.email) {
+    message.error('请输入邮箱');
+    return;
+  }
+  // 60s倒计时
+  isGet.value = true;
+  const timer = setInterval(() => {
+    time.value--;
+    if (time.value === 0) {
+      clearInterval(timer);
+      isGet.value = false;
+      time.value = 60;
+    }
+  }, 1000);
+  const res = await getEmailCodeApi(friendForm.value.email);
+  if (res.code === 200) {
+    message.success(res.msg)
+  }
+};
+
+// 表单验证并提交
 const formRef = ref();
 const submitFriendForm = () => {
-  formRef.value?.validate((errors: any) => {
+  formRef.value?.validate(async (errors: any) => {
     if (!errors) {
-      console.log("验证通过");
+      const res = await addFriendApi(friendForm.value);
+      if (res.code === 200) {
+        message.success(res.msg);
+      }
     } else {
-      console.log(errors);
+      message.error("表单验证失败");
     }
   });
 };
+
+const showModalFn = () => {
+  showModal.value = true;
+};
+defineExpose({
+  showModalFn
+})
 </script>
 
 <style lang="scss" scoped></style>

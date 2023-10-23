@@ -124,32 +124,45 @@ exports.updateCategoryById = async (req, res) => {
 }
 // 按id分页获取分类下的所有文章, 按时间降序
 exports.getArticleByCategoryId = async (req, res) => {
-    const { id, page, pageSize } = req.query;
-    if (!id || !page || !pageSize) {
+    const { category, page, pageSize } = req.query;
+    console.log(category, page, pageSize);
+    if (!category || !page || !pageSize) {
         return res.json({
             code: 400,
             msg: '参数不完整'
         });
     }
     try {
-        // 分页获取分类下的所有文章,将分类id转为对应的分类名
-        const sql = `select articles.id, title, description, content, 
-        categories.category_name as category_name, create_time, update_time from articles 
-        left join categories on articles.category_id=categories.id 
-        where category_id=${id} 
-        order by create_time 
-        desc limit ${(page - 1) * pageSize}, ${pageSize}`;
+        // 分页获取分类下的所有文章,将分类id转为对应的分类名,评论数量
+        const sql = `SELECT
+        articles.id,
+        articles.title,
+        articles.description,
+        categories.category_name AS category_name,
+        articles.create_time,
+        articles.update_time,
+        count( comments.id ) AS total 
+    FROM
+        articles
+        LEFT JOIN categories ON articles.category_id = categories.id
+        LEFT JOIN comments ON articles.id = comments.article_id 
+    WHERE
+        category_id = ${category} 
+    GROUP BY
+        articles.id DESC 
+        LIMIT ${( page - 1 ) * pageSize },${ pageSize }`;
         const [result] = await query(sql);
         // 获取分类下的所有文章的总数
-        const sql1 = `select count(*) as total from articles where category_id=${id}`;
+        const sql1 = `select count(*) as total from articles where category_id=${category}`;
         const [result1] = await query(sql1);
         return res.json({
             code: 200,
             msg: '获取成功',
+            succeed: true,
             data: {
                 list: result,
                 // 总页数,向上取整
-                totalPage: Math.ceil(result1[0].total / pageSize)
+                total: Math.ceil(result1[0].total / pageSize)
             }
         });
     } catch (err) {

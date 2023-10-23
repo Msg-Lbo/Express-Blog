@@ -12,17 +12,6 @@ export const getAllArticleApi = async (page: number, pageSize: number) => {
     })
 }
 
-// 获取指定分类文章列表
-export const getArticles = async (category?: number | string) => {
-    return await $http({
-        url: '/get-articles',
-        method: 'GET',
-        params: {
-            category: category || ''
-        }
-    })
-}
-
 // 获取指定文章
 export const getArticle = async (id: number) => {
     return await $http({

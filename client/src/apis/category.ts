@@ -39,3 +39,16 @@ export const deleteCategoryApi = async (id: number) => {
         }
     })
 }
+
+// 获取指定分类文章列表
+export const getArticlesByCategoryApi = async (category: number | string, page: number, pageSize: number) => {
+    return await $http({
+        url: '/category/get-article-by-category',
+        method: 'GET',
+        params: {
+            category,
+            page,
+            pageSize,
+        }
+    })
+}
