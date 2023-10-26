@@ -10,44 +10,31 @@
             <n-input v-model:value="articleFrom.description" />
           </n-form-item-gi>
           <n-form-item-gi :span="6" path="create_time" label="发布时间">
-            <n-date-picker
-              style="width: 100%"
-              v-model:value="articleFrom.create_time"
-              type="datetime"
-              clearable
-            />
+            <n-date-picker style="width: 100%" v-model:value="articleFrom.create_time" type="datetime" clearable />
           </n-form-item-gi>
           <n-form-item-gi :span="6" path="update_time" label="最后更新时间">
-            <n-date-picker
-              style="width: 100%"
-              v-model:value="articleFrom.update_time"
-              type="datetime"
-              clearable
-            />
+            <n-date-picker style="width: 100%" v-model:value="articleFrom.update_time" type="datetime" clearable />
           </n-form-item-gi>
           <n-form-item-gi :span="12" path="category_id" label="分类">
-            <n-select
-              v-model:value="articleFrom.category_id"
-              placeholder="Select"
-              :options="options"
-              clearable
-            />
+            <n-select v-model:value="articleFrom.category_id" placeholder="Select" :options="options" clearable />
           </n-form-item-gi>
         </n-grid>
       </n-form>
     </div>
-    <MdEditor v-model="articleFrom.content" :theme="theme" @on-save="saveArticle" />
+    <MdEditor v-model="articleFrom.content" :theme="theme" @on-save="saveArticle" @onUploadImg="onUploadImg" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { MdEditor } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { useThemeStore } from "@/store/theme";
 import { FormRules, useMessage } from "naive-ui";
 import { saveArticleApi } from "@/apis/article";
 import { getAllCategoryApi } from "@/apis/category";
+import { uploadImageApi } from "@/apis/image";
+import { httpInstance } from "@/apis";
 const message = useMessage();
 interface ArticleFrom {
   id?: number | null;
@@ -146,7 +133,9 @@ const theme = ref<any>(themeStore.$state.theme);
 watch(themeStore.$state, (_oldVal, newVal) => {
   theme.value = newVal.theme;
 });
-
+onMounted(() => {
+  getCategory();
+});
 // 保存文章
 const saveArticle = async () => {
   console.log(articleFrom.value);
@@ -175,7 +164,25 @@ const getCategory = async () => {
     options.value.push(...list);
   }
 };
-getCategory();
+
+const onUploadImg = async (files: any[], callback: (arg0: any[]) => void) => {
+  const res = await Promise.all(
+    files.map((file) => {
+      return new Promise(async (rev, rej) => {
+        const form = new FormData();
+        form.append("file", file);
+        await uploadImageApi(form)
+          .then((res) => {
+            rev(res);
+          })
+          .catch((err) => {
+            rej(err);
+          });
+      });
+    })
+  );
+  callback(res.map((item: any) => httpInstance.defaults.url + item.data[0]));
+};
 </script>
 
 <style lang="scss" scoped></style>

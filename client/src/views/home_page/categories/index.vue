@@ -25,6 +25,7 @@ import { onMounted, ref } from "vue";
 
 onMounted(() => {
   getCategoryList();
+  document.title = "一楼没太阳 | 分类";
 })
 
 // 获取分类列表

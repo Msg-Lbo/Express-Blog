@@ -64,12 +64,12 @@ const getArticleDetail = async () => {
   const res = await getArticleDetailApi(id.value);
   if (res.code === 200) {
     articleDetail.value = res.data;
+    // 设置标题
+    document.title = `一楼没太阳 | ${res.data.title}`;
   }
 };
 // 跳转到其他页面
 const toOtherPage = (otherId: number) => {
-  console.log(id.value, otherId);
-
   // 修改路由参数
   router.push({
     path: "/detail/",

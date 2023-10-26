@@ -59,10 +59,14 @@ import {
   MessageOutlined as msgIcon,
   RemoveRedEyeOutlined as viewIcon,
 } from "@vicons/material";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 const page = ref(1);
 const pageSize = ref(14);
 const count = ref(0);
+onMounted(() => {
+  getArticleList();
+  document.title = "一楼没太阳 | 首页";
+});
 // 获取文章列表
 const articleList = ref<any>([]);
 const getArticleList = async () => {
@@ -78,7 +82,6 @@ const handlePageChange = (num: number) => {
   page.value = num;
   getArticleList();
 };
-getArticleList();
 
 // 到文章
 const toArticle = (id: number) => {
@@ -94,6 +97,7 @@ const toArticle = (id: number) => {
 <style lang="scss" scoped>
 #article-list {
   position: relative;
+
   .pagination {
     position: absolute;
     bottom: -48px;
@@ -108,16 +112,19 @@ const toArticle = (id: number) => {
 
   .card-item {
     cursor: pointer;
+
     ::v-deep(.n-card-header__main) {
       font-size: 16px;
       font-weight: bold;
     }
+
     .icon {
       display: flex;
       align-items: center;
     }
   }
 }
+
 // 小于1200px时
 @media screen and (max-width: 1200px) {
   #article-list {
@@ -125,6 +132,7 @@ const toArticle = (id: number) => {
       max-height: 640px !important;
     }
   }
+
   .card-list {
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   }
@@ -137,8 +145,8 @@ const toArticle = (id: number) => {
       max-height: 460px !important;
     }
   }
+
   .card-list {
     grid-template-columns: 1fr;
   }
-}
-</style>
+}</style>

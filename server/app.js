@@ -5,11 +5,11 @@ const multer = require('multer');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const app = express();
-const host = '192.168.2.13'
+const host = '127.0.0.1'
 const port = '9090'
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://192.168.2.13:5173', 'http://localhost:3000', 'http://192.168.2.13:3000'],
+    origin: ['http://192.168.2.22:5173', 'http://127.0.0.1:5173', 'http://localhost:3000', 'http://192.168.2.22:3000'],
     methods: 'GET,POST',
     allowHeaders: 'Content-Type,Authorization',
     exposeHeaders: 'Content-length',
@@ -18,8 +18,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.json());
 const upload = multer({
-    dest: './public/uploads/',
+    dest: './public/uploads/temp',
 });
 app.use(upload.any());
 app.use(express.static('./public'));

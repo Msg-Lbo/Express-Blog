@@ -10,6 +10,8 @@
             :content="item.title"
             :time="timestampToTime(item.create_time)"
             :key="item.id"
+            @click="toOtherPage(item.id)"
+            style="cursor: pointer;"
           />
           <n-timeline-item type="warning" v-if="page >= count" content="没有了啦,别翻了" />
           <n-timeline-item type="info" v-else content="等一等,还有一点点" />
@@ -28,8 +30,12 @@ const pageSize = ref(25);
 const count = ref(0);
 onMounted(() => {
   getArticleList();
+  document.title = "一楼没太阳 | 归档";
 });
-
+const toOtherPage = (otherId: number) => {
+  // 打开新页面
+  window.open(`/detail?id=${otherId}`, "_blank");
+};
 const handleScroll = debounce((e: Event) => {
   if (page.value === count.value) return;
   const height = (e.target as HTMLElement).getBoundingClientRect().height;

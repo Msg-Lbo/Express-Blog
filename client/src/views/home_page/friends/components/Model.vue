@@ -24,11 +24,14 @@
             </n-form-item-gi>
             <n-form-item-gi :span="5">
               <n-button style="width: 100%" @click="getCaptcha" :disabled="isGet">
-                {{ isGet ? time + 's后再次获取' : '获取验证码' }}
+                {{ isGet ? time + "s后再次获取" : "获取验证码" }}
               </n-button>
             </n-form-item-gi>
           </n-grid>
         </n-form>
+        <div class="tips">
+          {{ tips }}
+        </div>
         <n-button @click="submitFriendForm">提交</n-button>
       </n-card>
     </n-modal>
@@ -40,10 +43,11 @@ import { addFriendApi } from "@/apis/friend";
 import { getEmailCodeApi } from "@/apis/user";
 import { FormRules, useMessage } from "naive-ui";
 import { ref } from "vue";
-const message = useMessage()
+const message = useMessage();
 const showModal = ref(false);
 const isGet = ref(false);
 const time = ref(60);
+const tips = ref("链接请务必带上http/https");
 interface ModelType {
   name: string;
   link: string;
@@ -82,7 +86,7 @@ const rules: FormRules = {
 // 获取验证码
 const getCaptcha = async () => {
   if (!friendForm.value.email) {
-    message.error('请输入邮箱');
+    message.error("请输入邮箱");
     return;
   }
   // 60s倒计时
@@ -97,7 +101,7 @@ const getCaptcha = async () => {
   }, 1000);
   const res = await getEmailCodeApi(friendForm.value.email);
   if (res.code === 200) {
-    message.success(res.msg)
+    message.success(res.msg);
   }
 };
 
@@ -120,8 +124,13 @@ const showModalFn = () => {
   showModal.value = true;
 };
 defineExpose({
-  showModalFn
-})
+  showModalFn,
+});
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tips {
+  color: #ff4d4f;
+  margin-top: 10px;
+}
+</style>

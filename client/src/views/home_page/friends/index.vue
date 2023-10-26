@@ -5,7 +5,7 @@
       <n-button @click="handleFiled" type="success" size="small">申请友链</n-button>
     </div>
     <ul class="friends-list">
-      <li v-for="link in links" :key="link.id">
+      <li v-for="link in links" :key="link.id" @click="toFriend(link.link)">
         <div class="friends-item">
           <div class="img">
             <img :src="link.logo" alt="图标没有惹" />
@@ -26,22 +26,25 @@
 </template>
 
 <script setup lang="ts">
-import addFriendModal from './components/Model.vue'
+import addFriendModal from "./components/Model.vue";
 import { getFriendByPassApi } from "@/apis/friend";
 import { onMounted, ref } from "vue";
 
 interface Link {
   id: number;
   name: string;
-  url: string;
+  link: string;
   logo: string;
   description: string;
 }
 
 onMounted(() => {
   getLinks();
-})
-
+  document.title = "一楼没太阳 | 友情链接";
+});
+const toFriend = (link: string) => {
+  window.open(link, "_blank");
+};
 // 获取已经通过审核的友链
 const links = ref<Link[]>([]);
 const getLinks = async () => {
@@ -50,16 +53,15 @@ const getLinks = async () => {
     links.value = res.data;
   }
 };
-const addFriendModalRef = ref()
+const addFriendModalRef = ref();
 const handleFiled = () => {
-  addFriendModalRef.value.showModalFn()
-
-}
+  addFriendModalRef.value.showModalFn();
+};
 </script>
 
 <style lang="scss" scoped>
 #friends {
-  .filed-button{
+  .filed-button {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 16px;

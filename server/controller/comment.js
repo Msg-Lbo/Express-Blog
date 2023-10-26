@@ -7,6 +7,7 @@ exports.sendComment = async (req, res) => {
     try {
         // 验证码小写
         lowerCaseCode = code.toLowerCase();
+        console.log(req.session.captcha, lowerCaseCode);
         // 判断验证码是否正确
         if (req.session.captcha !== lowerCaseCode) {
             return res.json({

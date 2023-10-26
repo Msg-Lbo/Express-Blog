@@ -6,7 +6,7 @@
                 <n-scrollbar style="max-height: 450px">
                     <ul class="article-list">
                         <li class="article-item" v-for="item in articleList" :key="item.id">
-                            <n-card size="small" hoverable>
+                            <n-card size="small" hoverable @click="toOtherPage(item.id)">
                                 <div class="content">
                                     <div class="title">
                                         {{ item.title }}
@@ -55,6 +55,11 @@ const handlePageChange = (num: number) => {
     page.value = num;
     getCategoryIncludesArticles(tmpId.value);
 };
+const toOtherPage = (otherId: number) => {
+    // 打开新页面
+    window.open(`/detail?id=${otherId}`, "_blank");
+}
+
 defineExpose({
     getCategoryIncludesArticles
 })
