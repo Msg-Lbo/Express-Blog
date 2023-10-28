@@ -36,6 +36,7 @@ import { getAllCategoryApi } from "@/apis/category";
 import { uploadImageApi } from "@/apis/image";
 import { httpInstance } from "@/apis";
 const message = useMessage();
+document.title = "编辑文章";
 interface ArticleFrom {
   id?: number | null;
   title: string;

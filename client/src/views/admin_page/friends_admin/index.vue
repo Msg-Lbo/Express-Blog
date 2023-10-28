@@ -16,6 +16,7 @@
 <script setup lang='ts'>
 import wait from './components/wait.vue';
 import passed from './components/passed.vue';
+document.title = '友联管理';
 </script>
 
 <style lang='scss' scoped>

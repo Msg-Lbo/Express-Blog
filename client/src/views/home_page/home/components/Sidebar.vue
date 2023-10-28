@@ -1,10 +1,10 @@
 <template>
-  <div id="sidebar">
+  <div id="sidebar" :style="{ 'background-image': `url(${LeftBgLight})` }">
     <div class="logo">
-      <img src="http://q1.qlogo.cn/g?b=qq&nk=24130801&s=100" alt="" />
+      <img :src="Logo" alt="" />
       <div class="text-logo">
-        <h1>一楼没太阳</h1>
-        <p>买四个萝卜</p>
+        <h1>{{ Title }}</h1>
+        <p>{{ LogoText }}</p>
       </div>
     </div>
     <div class="menu">
@@ -13,7 +13,7 @@
     <!-- 备案信息 -->
     <div class="icp">
       <n-button text tag="a" href="https://beian.miit.gov.cn/" target="_blank" type="primary">
-        蜀ICP备2021111111号
+        {{ Ipc }}
       </n-button>
     </div>
   </div>
@@ -23,6 +23,9 @@
 import router from "@/router";
 import type { MenuOption } from "naive-ui";
 import { ref } from "vue";
+import { useSettingsStore } from "@/store/settings";
+const settingStore = useSettingsStore();
+const { Title, Logo, LogoText, Ipc, LeftBgLight } = settingStore.$state;
 const activeKey = ref<string | null>(null);
 const menuOptions: MenuOption[] = [
   {
@@ -58,7 +61,6 @@ const handleMenuChange = (key: string) => {
 #sidebar {
   height: 100vh;
   font-weight: bold;
-  background-image: url("@/assets/images/sidebar-bg-light-2.png");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;

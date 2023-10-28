@@ -51,6 +51,7 @@ import { useMessage } from "naive-ui";
 import { onMounted, ref } from "vue";
 const category_name = ref("");
 const message = useMessage();
+document.title="分类管理"
 // 保存分类
 const onAddCategory = async () => {
   const res = await addCategoryApi(category_name.value);

@@ -20,9 +20,11 @@
 <script setup lang="ts">
 import { zhCN, dateZhCN, darkTheme } from "naive-ui";
 import { LightModeFilled, ModeNightFilled } from "@vicons/material";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useThemeStore } from "@/store/theme";
+import { useSettingsStore } from "@/store/settings";
 const themeStore = useThemeStore();
+const settingStore = useSettingsStore();
 const theme = ref<any>(themeStore.theme === "dark" ? darkTheme : null);
 const active = ref<boolean>(themeStore.theme === "dark" ? true : false);
 // watch监听localStorage
@@ -33,7 +35,9 @@ watch(themeStore.$state, (_oldVal, newVal) => {
     theme.value = null;
   }
 });
-
+onMounted(() => {
+  settingStore.getSettings();
+});
 // 切换主题
 const handleChange = () => {
   if (active.value) {

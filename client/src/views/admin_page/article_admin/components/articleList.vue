@@ -59,6 +59,7 @@ const pageSize = ref(17);
 const total = ref(100);
 const articleList = ref<any>([]);
 const message = useMessage();
+document.title="文章列表"
 const getAllarticle = async () => {
   const res = await getAllArticleApi(page.value, pageSize.value);
   if (res.code === 200) {

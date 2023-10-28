@@ -14,6 +14,7 @@ import {
   CommentOutlined as CommentIcon,
   LinkOutlined as LinkIcon,
   SettingsOutlined as SettingsIcon,
+  BrokenImageOutlined as ImageIcon,
   AllInclusiveOutlined as AllInclusiveIcon,
 } from "@vicons/material";
 import router from "@/router";
@@ -56,7 +57,7 @@ const menuOptions: MenuOption[] = [
   {
     label: "图片管理",
     key: "images-manager",
-    icon: renderIcon(SettingsIcon),
+    icon: renderIcon(ImageIcon),
   },
   {
     label: "过去增多，未来减少",

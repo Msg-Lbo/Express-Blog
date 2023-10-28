@@ -15,6 +15,7 @@
 
 <script setup lang='ts'>
 import siteSettings from './components/siteSettings.vue';
+document.title = '设置';
 </script>
 
 <style lang='scss' scoped>

@@ -67,6 +67,7 @@ const pageSize = ref(15);
 const total = ref(100);
 const message = useMessage()
 const comments = ref<any>([]);
+document.title='评论管理'
 // 获取所有评论
 const getAllComments = async () => {
   const res = await getAllCommentApi(page.value, pageSize.value);

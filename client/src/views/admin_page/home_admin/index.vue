@@ -9,7 +9,7 @@
                     :width="240" bordered>
                     <admin-menu></admin-menu>
                 </n-layout-sider>
-                <n-layout :native-scrollbar="false">
+                <n-layout>
                     <router-view></router-view>
                 </n-layout>
             </n-layout>
@@ -23,11 +23,11 @@
 <script setup lang='ts'>
 import adminMenu from './components/menu.vue'
 import headerView from './components/header.vue'
+document.title = '后台管理'
 </script>
 
 <style lang='scss' scoped>
 #home-admin {
     min-width: 500px;
-   
 }
 </style>
