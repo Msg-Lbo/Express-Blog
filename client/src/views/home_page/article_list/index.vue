@@ -34,7 +34,7 @@
                     <n-icon size="15">
                       <category-icon />
                     </n-icon>
-                    <span>{{ item.category_name }}</span>
+                    <span>{{ item.category_name || "未分类" }}</span>
                   </span>
                 </n-space>
               </div>
@@ -149,4 +149,5 @@ const toArticle = (id: number) => {
   .card-list {
     grid-template-columns: 1fr;
   }
-}</style>
+}
+</style>

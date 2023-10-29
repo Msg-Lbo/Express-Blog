@@ -1,7 +1,7 @@
 <template>
-  <div id="sidebar" :style="{ 'background-image': `url(${LeftBgLight})` }">
+  <div id="sidebar" :style="{ 'background-image': `url(${theme})` }">
     <div class="logo">
-      <img :src="Logo" alt="" />
+      <img :src="Avatar" alt="" />
       <div class="text-logo">
         <h1>{{ Title }}</h1>
         <p>{{ LogoText }}</p>
@@ -22,11 +22,14 @@
 <script setup lang="ts">
 import router from "@/router";
 import type { MenuOption } from "naive-ui";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSettingsStore } from "@/store/settings";
+import { useThemeStore } from "@/store/theme";
 const settingStore = useSettingsStore();
-const { Title, Logo, LogoText, Ipc, LeftBgLight } = settingStore.$state;
+const { Title, Avatar, LogoText, Ipc, LeftBgLight, LeftBgDark } = settingStore.$state.siteSettings;
 const activeKey = ref<string | null>(null);
+const themeStore = useThemeStore();
+const theme = ref<any>(LeftBgLight);
 const menuOptions: MenuOption[] = [
   {
     label: "首页",
@@ -49,6 +52,14 @@ const menuOptions: MenuOption[] = [
     key: "about",
   },
 ];
+
+watch(themeStore.$state, (_oldVal, newVal) => {
+  if (newVal.theme === "dark") {
+    theme.value = LeftBgDark;
+  } else {
+    theme.value = LeftBgLight;
+  }
+});
 
 // 菜单切换触发
 const handleMenuChange = (key: string) => {

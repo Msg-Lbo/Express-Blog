@@ -20,7 +20,7 @@ const refreshCapacht = async (req, res) => {
         if (req.session.captcha !== cap.text.toLowerCase()) {
             req.session.captcha = cap.text.toLowerCase();
         }
-        console.log("存:", req.session);
+        // console.log("存:", req.session);
         res.type('svg');// 响应的类型
         res.json({
             code: 200,

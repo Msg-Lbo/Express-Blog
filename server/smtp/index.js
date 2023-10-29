@@ -1,12 +1,12 @@
 const nodemailer = require('nodemailer');
-
+const config = require('./config.json');
 const nodeMail = nodemailer.createTransport({
-    host: 'smtp.qq.com',
-    port: 465,
+    host: config.host,
+    port: config.port,
     secure: true,
     auth: {
-        user: 'ylmty@foxmail.com',
-        pass: 'ffxzynmipsmqbief'
+        user: config.user,
+        pass: config.pass
     }
 });
 

@@ -24,7 +24,7 @@ exports.uploadImage = async (req, res) => {
                 './public/uploads/temp/' + files[i].filename,
                 './public/uploads/' + filename
             );
-            console.log(files[i].filename);
+            // console.log(files[i].filename);
             // 将图片地址存入数组
             const url = '/uploads/' + filename
             ret_urls.push(url);
@@ -105,7 +105,7 @@ exports.getImageList = async (req, res) => {
         const count = `select count(*) as total from images`;
         const [result] = await query(sql);
         const [total] = await query(count);
-        console.log(total);
+        // console.log(total);
         if (result.length === 0) {
             return res.json({
                 code: 200,

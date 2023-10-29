@@ -26,3 +26,20 @@ export const getSettingsApi = () => {
         method: "GET",
     });
 }
+
+// 获取邮件服务器设置
+export const getMailSettingsApi = () => {
+    return $http({
+        url: "/settings/get-mail-settings",
+        method: "GET",
+    });
+}
+
+// 保存邮件服务器设置
+export const saveMailSettingsApi = (data:{ host: string, port: number, user: string, pass: string }) => {
+    return $http({
+        url: "/settings/save-mail-settings",
+        method: "POST",
+        data,
+    });
+}
